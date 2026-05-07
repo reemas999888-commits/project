@@ -1,0 +1,108 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:background="#1A0A50" android:layoutDirection="rtl">
+    <!--  Floating colored dots (decorative)  -->
+    <TextView android:id="@+id/dot1" android:layout_width="14dp" android:layout_height="14dp" android:background="@drawable/bg_circle_purple" android:layout_marginStart="40dp" android:layout_marginBottom="200dp" app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView android:id="@+id/dot2" android:layout_width="10dp" android:layout_height="10dp" android:background="@drawable/bg_circle_yellow" android:layout_marginEnd="50dp" android:layout_marginBottom="260dp" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView android:id="@+id/dot3" android:layout_width="12dp" android:layout_height="12dp" android:background="@drawable/bg_circle_yellow" android:layout_marginStart="130dp" android:layout_marginBottom="160dp" app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
+    <!--  Main completion card  -->
+    <LinearLayout
+        android:id="@+id/llCompletionCard"
+        android:layout_width="339dp"
+        android:layout_height="613dp"
+        android:layout_marginHorizontal="32dp"
+        android:background="@drawable/bg_completion_card"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <!--  Star gold circle  -->
+        <FrameLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_circle_yellow">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="⭐"
+                android:textSize="46sp" />
+        </FrameLayout>
+        <!--  ماشاء الله  -->
+        <TextView
+            android:id="@+id/tvMashallah"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ماشاء الله"
+            android:textColor="@color/yellow_main"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+        <!--  أحسنت يا بطل  -->
+        <TextView
+            android:id="@+id/tvWellDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="أحسنت يا بطل!"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+        <!--  Completion message  -->
+        <TextView
+            android:id="@+id/tvCompletionMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="28dp"
+            android:gravity="center"
+            android:text="لقد أتممت حفظ 7 آيات من سورة الفاتحة"
+            android:textColor="@color/text_dim"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="جعلك الله من اهل القران 🌙🌱"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <!--  Buttons row  -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
+            android:orientation="horizontal">
+            <!--  تم button (yellow)  -->
+            <!--  أعد الحفظ button (outlined)  -->
+            <Button
+                android:id="@+id/btnDone"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_yellow"
+                android:text="✓ تم"
+                android:textColor="#09092B"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnRepeatHifz"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button_outline"
+                android:text="🔄 أعد الحفظ"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

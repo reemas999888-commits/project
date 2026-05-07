@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.HifzApp" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/yellow_main</item>
+        <item name="colorPrimaryDark">@color/bg_dark</item>
+        <item name="colorAccent">@color/purple_main</item>
+        <item name="android:windowBackground">@color/bg_dark</item>
+        <item name="android:statusBarColor">@color/bg_dark</item>
+        <item name="android:navigationBarColor">@color/nav_bar_bg</item>
+        <item name="android:layoutDirection">rtl</item>
+        <item name="android:supportsRtl">true</item>
+    </style>
+</resources>

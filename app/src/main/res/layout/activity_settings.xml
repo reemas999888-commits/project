@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#1A1040"
+    android:padding="20dp">
+
+    <!-- هيدر -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="32dp">
+
+        <TextView
+            android:id="@+id/tvSettingsBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="→"
+            android:textSize="22sp"
+            android:textColor="#FFFFFF"
+            android:paddingEnd="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="الإعدادات"
+            android:textSize="22sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- خيار الوضع الليلي -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#2A1F5E"
+        android:padding="16dp"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="الوضع الليلي"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <Switch
+            android:id="@+id/switchDarkMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <!-- خيار حجم الخط -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#2A1F5E"
+        android:padding="16dp"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="حجم الخط"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <SeekBar
+            android:id="@+id/seekFontSize"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:max="4"
+            android:progress="2" />
+
+    </LinearLayout>
+
+    <!-- رابط حول التطبيق -->
+    <LinearLayout
+        android:id="@+id/layoutAbout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#2A1F5E"
+        android:padding="16dp"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:id="@+id/tvAboutLink"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="حول التطبيق"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="←"
+            android:textColor="#AAAACC"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

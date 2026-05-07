@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">حافظ الصغير</string>
+    <string name="app_subtitle">هيا نحفظ القرآن معاً!</string>
+    <string name="btn_start">ابدأ الحفظ</string>
+    <string name="motivational">كل آية تحفظها نجمة في سماء أجرك!</string>
+    <string name="nav_hifz">الحفظ</string>
+    <string name="nav_achievements">إنجازاتي</string>
+    <string name="nav_settings">الإعدادات</string>
+    <string name="select_surah">اختر السورة</string>
+    <string name="search_hint">ابحث عن سورة...</string>
+    <string name="filter_all">الكل</string>
+    <string name="filter_juz">جزء عم</string>
+    <string name="filter_short">السور القصيرة</string>
+    <string name="hifz_setup">إعداد الحفظ</string>
+    <string name="select_verses">اختر الآيات</string>
+    <string name="from_verse">من الآية</string>
+    <string name="to_verse">إلى الآية</string>
+    <string name="will_memorize">ستحفظ %d آيات</string>
+    <string name="repeat_count">عدد مرات التكرار</string>
+    <string name="btn_start_now">ابدأ الحفظ الآن</string>
+    <string name="tip">نصيحة: ابدأ بعدد قليل من الآيات وكرر كثيراً، فالتكرار سر الحفظ!</string>
+    <string name="repetition">التكرار</string>
+    <string name="completed">مكتمل</string>
+    <string name="verse_label">الآية %d من %d</string>
+    <string name="mashallah">ماشاء الله!</string>
+    <string name="well_done">أحسنت يا بطل!</string>
+    <string name="completion_msg">لقد أتممت حفظ %d آيات من سورة %s</string>
+    <string name="btn_done">تم</string>
+    <string name="btn_repeat">أعد الحفظ</string>
+    <string name="easy">سهلة</string>
+    <string name="meccan">مكية</string>
+    <string name="medinan">مدنية</string>
+    <string name="coming_soon">قريباً!</string>
+</resources>

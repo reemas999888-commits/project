@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#1A1040"
+    android:padding="20dp"
+    android:gravity="center_horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="40dp">
+
+        <TextView
+            android:id="@+id/tvAboutBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="→"
+            android:textSize="22sp"
+            android:textColor="#FFFFFF"
+            android:paddingEnd="12dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="حول التطبيق"
+            android:textSize="22sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="📖"
+        android:textSize="60sp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="حافظ الصغير"
+        android:textSize="26sp"
+        android:textColor="#F5C542"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="الإصدار 1.0"
+        android:textSize="14sp"
+        android:textColor="#AAAACC"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="تطبيق يساعد الأطفال على حفظ القرآن الكريم بطريقة ممتعة وتفاعلية."
+        android:textSize="16sp"
+        android:textColor="#CCCCEE"
+        android:gravity="center"
+        android:lineSpacingExtra="6dp"/>
+
+</LinearLayout>

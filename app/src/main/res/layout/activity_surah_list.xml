@@ -1,0 +1,24 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/bg_dark" android:layoutDirection="rtl">
+    <!--  Header row  -->
+    <LinearLayout android:id="@+id/llHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="16dp" android:layoutDirection="rtl" app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent">
+        <!--  Gold coin icon  -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🪙" android:textSize="30sp"/>
+        <!--  Title  -->
+        <TextView android:id="@+id/tvTitle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="اختر السورة" android:textSize="26sp" android:textColor="@color/yellow_main" android:textStyle="bold" android:gravity="center"/>
+        <!--  Arrow back  -->
+        <TextView android:id="@+id/tvBack" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="→" android:textSize="24sp" android:textColor="@color/white" android:padding="8dp"/>
+    </LinearLayout>
+    <!--  Search bar  -->
+    <LinearLayout android:id="@+id/llSearch" android:layout_width="0dp" android:layout_height="52dp" android:orientation="horizontal" android:background="@drawable/bg_search_bar" android:gravity="center_vertical" android:paddingStart="20dp" android:paddingEnd="16dp" android:layoutDirection="rtl" android:layout_marginHorizontal="16dp" android:layout_marginTop="4dp" app:layout_constraintTop_toBottomOf="@id/llHeader" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent">
+        <EditText android:id="@+id/etSearch" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="ابحث عن سورة..." android:textColorHint="#6666AA" android:textColor="@color/white" android:textSize="16sp" android:background="@null" android:gravity="end" android:imeOptions="actionSearch" android:inputType="text" android:singleLine="true"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🔍" android:textSize="20sp" android:layout_marginStart="8dp"/>
+    </LinearLayout>
+    <!--  Filter chips  -->
+    <LinearLayout android:id="@+id/llFilters" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layoutDirection="rtl" android:layout_marginTop="12dp" app:layout_constraintTop_toBottomOf="@id/llSearch" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp">
+        <TextView android:id="@+id/tvFilterShort" android:layout_width="wrap_content" android:layout_height="40dp" android:text="السور القصيرة" android:textColor="@color/white" android:textSize="14sp" android:gravity="center" android:paddingHorizontal="18dp" android:background="@drawable/bg_filter_inactive" android:layout_marginStart="8dp"/>
+        <TextView android:id="@+id/tvFilterJuz" android:layout_width="wrap_content" android:layout_height="40dp" android:text="جزء عم" android:textColor="@color/white" android:textSize="14sp" android:gravity="center" android:paddingHorizontal="18dp" android:background="@drawable/bg_filter_inactive" android:layout_marginStart="8dp"/>
+        <TextView android:id="@+id/tvFilterAll" android:layout_width="wrap_content" android:layout_height="40dp" android:text="الكل" android:textColor="#09092B" android:textSize="14sp" android:textStyle="bold" android:gravity="center" android:paddingHorizontal="18dp" android:background="@drawable/bg_filter_active"/>
+    </LinearLayout>
+    <!--  Surah RecyclerView  -->
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/rvSurahs" android:layout_width="0dp" android:layout_height="0dp" android:layout_marginTop="12dp" android:layout_marginHorizontal="12dp" android:clipToPadding="false" android:paddingBottom="16dp" app:layout_constraintTop_toBottomOf="@id/llFilters" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

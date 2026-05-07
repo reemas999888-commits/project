@@ -1,0 +1,5 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_hifz" android:icon="@drawable/ic_book" android:title="الحفظ"/>
+    <item android:id="@+id/nav_achievements" android:icon="@drawable/ic_trophy" android:title="إنجازاتي"/>
+    <item android:id="@+id/nav_settings" android:icon="@drawable/ic_settings" android:title="الإعدادات"/>
+</menu>
