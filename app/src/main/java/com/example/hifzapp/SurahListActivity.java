@@ -30,6 +30,7 @@ public class SurahListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mood.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_surah_list);
 

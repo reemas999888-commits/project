@@ -1,16 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="bg_dark">#09092B</color>
-    <color name="bg_card">#13134A</color>
-    <color name="bg_card2">#1E1E68</color>
-    <color name="purple_main">#7040CC</color>
-    <color name="purple_light">#8B55E0</color>
-    <color name="yellow_main">#F5C428</color>
-    <color name="yellow_dark">#D4A800</color>
-    <color name="white">#FFFFFF</color>
-    <color name="gray_text">#8888BB</color>
-    <color name="nav_bar_bg">#0D0D35</color>
-    <color name="nav_active">#F5C428</color>
-    <color name="nav_inactive">#6666AA</color>
-    <color name="text_dim">#AAAACC</color>
-    <color name="red_cancel">#FF5252</color>
+        <color name="bg_dark">#F5F0FF</color>
+        <color name="bg_card">#FFFFFF</color>
+        <color name="bg_card2">#F0EAFF</color>
+        <color name="purple_main">#9B6FE8</color>
+        <color name="purple_light">#B590FF</color>
+        <color name="yellow_main">#C8960A</color>
+        <color name="yellow_dark">#A07800</color>
+        <color name="white">#9B6FE8</color>
+        <color name="gray_text">#6655AA</color>
+        <color name="nav_bar_bg">#EDE5FF</color>
+        <color name="nav_active">#C8960A</color>
+        <color name="nav_inactive">#9988CC</color>
+        <color name="text_dim">#554488</color>
+        <color name="red_cancel">#CC0000</color>
 </resources>
