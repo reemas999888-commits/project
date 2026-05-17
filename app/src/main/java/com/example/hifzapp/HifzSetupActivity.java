@@ -20,6 +20,7 @@ public class HifzSetupActivity extends BaseActivity {
     private TextView tvSetupBack;
 
     private String surahName = "سورة الفاتحة";
+    private int surahNumber = 1;
     private int totalVerses = 7;
     private int fromVerse = 1;
     private int toVerse = 7;
@@ -31,7 +32,8 @@ public class HifzSetupActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hifz_setup);
 
-        surahName = getIntent().getStringExtra("surah_name");
+        surahName   = getIntent().getStringExtra("surah_name");
+        surahNumber = getIntent().getIntExtra("surah_number", 1);
         totalVerses = getIntent().getIntExtra("surah_verse_count", 7);
 
         if (surahName == null) {
@@ -136,19 +138,11 @@ public class HifzSetupActivity extends BaseActivity {
 
         btnStartHifzNow.setOnClickListener(v -> {
 
-            DatabaseHelper dbHelper = new DatabaseHelper(this);
-            Progress progress = dbHelper.getProgress();
-
             Intent intent = new Intent(HifzSetupActivity.this, HifzActivity.class);
 
             intent.putExtra("surah_name", surahName);
-
-            if (progress != null) {
-                intent.putExtra("from_verse", progress.currentAyah);
-            } else {
-                intent.putExtra("from_verse", fromVerse);
-            }
-
+            intent.putExtra("surah_number", surahNumber);
+            intent.putExtra("from_verse", fromVerse);
             intent.putExtra("to_verse", toVerse);
             intent.putExtra("repeat_count", repeatCount);
 

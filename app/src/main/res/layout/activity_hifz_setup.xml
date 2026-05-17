@@ -1,35 +1,29 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/bg_dark" android:layoutDirection="rtl">
     <!--  Header  -->
     <LinearLayout android:id="@+id/llSetupHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="16dp" android:layoutDirection="rtl" app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent">
-        <!--  Book icon circle  -->
         <FrameLayout android:layout_width="52dp" android:layout_height="52dp" android:background="@drawable/bg_circle_purple_icon">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📖" android:textSize="24sp" android:layout_gravity="center"/>
         </FrameLayout>
-        <!--  Title group  -->
         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="end" android:layout_marginEnd="12dp">
             <TextView android:id="@+id/tvSetupTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="إعداد الحفظ" android:textSize="24sp" android:textColor="@color/yellow_main" android:textStyle="bold"/>
             <TextView android:id="@+id/tvSetupSurahName" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="سورة الفاتحة" android:textSize="15sp" android:textColor="@color/text_dim"/>
         </LinearLayout>
-        <!--  Arrow  -->
         <TextView android:id="@+id/tvSetupBack" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="→" android:textSize="22sp" android:textColor="@color/white" android:padding="8dp"/>
     </LinearLayout>
     <!--  Scroll content  -->
     <ScrollView android:layout_width="0dp" android:layout_height="0dp" android:layout_marginHorizontal="16dp" app:layout_constraintTop_toBottomOf="@id/llSetupHeader" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingBottom="24dp">
-            <!--  ── Card 1: Surah Info ──  -->
+            <!--  Card 1: Surah Info  -->
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/bg_rounded_card" android:padding="20dp" android:layout_marginTop="8dp">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layoutDirection="rtl">
-                    <!--  Surah name + count  -->
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="end">
                         <TextView android:id="@+id/tvInfoSurahName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="سورة الفاتحة" android:textSize="22sp" android:textColor="@color/white" android:textStyle="bold"/>
                         <TextView android:id="@+id/tvInfoVerseCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="7 آية" android:textSize="14sp" android:textStyle="bold" android:textColor="@color/gray_text" android:layout_marginTop="4dp"/>
                     </LinearLayout>
-                    <!--  Book icon box  -->
                     <FrameLayout android:layout_width="60dp" android:layout_height="60dp" android:background="@drawable/bg_button_yellow_square" android:layout_marginStart="16dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📖" android:textSize="28sp" android:layout_gravity="center"/>
                     </FrameLayout>
                 </LinearLayout>
-                <!--  Stars row (difficulty)  -->
                 <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_gravity="center" android:layout_marginTop="16dp">
                     <TextView android:id="@+id/tvStar1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="☆" android:textSize="28sp" android:textColor="#555588" android:layout_marginHorizontal="3dp"/>
                     <TextView android:id="@+id/tvStar2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="☆" android:textSize="28sp" android:textColor="#555588" android:layout_marginHorizontal="3dp"/>
@@ -40,67 +34,49 @@
                     <TextView android:id="@+id/tvStar7" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="★" android:textSize="28sp" android:textColor="@color/yellow_main" android:layout_marginHorizontal="3dp"/>
                 </LinearLayout>
             </LinearLayout>
-            <!--  ── Card 2: Choose Verses ──  -->
+            <!--  Card 2: Choose Verses  -->
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/bg_rounded_card" android:padding="20dp" android:layout_marginTop="12dp">
-                <!--  Title  -->
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical|end">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="اختر الآيات" android:textSize="18sp" android:textColor="@color/white" android:textStyle="bold"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" 📍" android:textSize="18sp"/>
                 </LinearLayout>
                 <!--  Counters row  -->
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="16dp" android:layoutDirection="rtl">
-                    <!--  من الآية counter  -->
+                    <!--  من الآية  -->
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:background="@drawable/bg_counter_box" android:padding="14dp" android:layout_marginEnd="8dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:text="من الآية" android:textSize="13sp" android:textColor="@color/gray_text" android:gravity="center"/>
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="10dp">
+                            <FrameLayout android:id="@+id/btnFromPlus" android:layout_width="38dp" android:layout_height="38dp" android:background="@drawable/bg_circle_purple" android:clickable="true" android:focusable="true">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+" android:textSize="20sp" android:textColor="@color/white" android:layout_gravity="center"/>
+                            </FrameLayout>
+                            <TextView android:id="@+id/tvFromVerse" android:layout_width="50dp" android:layout_height="wrap_content" android:text="1" android:textSize="28sp" android:textColor="@color/yellow_main" android:textStyle="bold" android:gravity="center" android:layout_marginHorizontal="8dp"/>
                             <FrameLayout android:id="@+id/btnFromMinus" android:layout_width="38dp" android:layout_height="38dp" android:background="@drawable/bg_circle_purple" android:clickable="true" android:focusable="true">
                                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="−" android:textSize="20sp" android:textColor="@color/white" android:layout_gravity="center"/>
                             </FrameLayout>
-                            <TextView android:id="@+id/tvFromVerse" android:layout_width="50dp" android:layout_height="wrap_content" android:text="1" android:textSize="28sp" android:textColor="@color/yellow_main" android:textStyle="bold" android:gravity="center" android:layout_marginHorizontal="8dp"/>
-
-                            <FrameLayout
-                                android:id="@+id/btnFromPlus"
-                                android:layout_width="38dp"
-                                android:layout_height="38dp"
-                                android:background="@drawable/bg_circle_purple"
-                                android:clickable="true"
-                                android:focusable="true">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="+"
-                                    android:textColor="@color/white"
-                                    android:textSize="20sp" />
-                            </FrameLayout>
                         </LinearLayout>
                     </LinearLayout>
-                    <!--  إلى الآية counter  -->
+                    <!--  إلى الآية  -->
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:background="@drawable/bg_counter_box" android:padding="14dp" android:layout_marginStart="8dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="إلى الآية" android:textSize="13sp" android:textStyle="bold" android:textColor="@color/gray_text" android:gravity="center"/>
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="10dp">
-                            <FrameLayout android:id="@+id/btnToMinus" android:layout_width="38dp" android:layout_height="38dp" android:background="@drawable/bg_circle_purple" android:clickable="true" android:focusable="true">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="−" android:textSize="20sp" android:textColor="@color/white" android:layout_gravity="center"/>
-                            </FrameLayout>
-                            <TextView android:id="@+id/tvToVerse" android:layout_width="50dp" android:layout_height="wrap_content" android:text="7" android:textSize="28sp" android:textColor="@color/yellow_main" android:textStyle="bold" android:gravity="center" android:layout_marginHorizontal="8dp"/>
                             <FrameLayout android:id="@+id/btnToPlus" android:layout_width="38dp" android:layout_height="38dp" android:background="@drawable/bg_circle_purple" android:clickable="true" android:focusable="true">
                                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+" android:textSize="20sp" android:textColor="@color/white" android:layout_gravity="center"/>
+                            </FrameLayout>
+                            <TextView android:id="@+id/tvToVerse" android:layout_width="50dp" android:layout_height="wrap_content" android:text="7" android:textSize="28sp" android:textColor="@color/yellow_main" android:textStyle="bold" android:gravity="center" android:layout_marginHorizontal="8dp"/>
+                            <FrameLayout android:id="@+id/btnToMinus" android:layout_width="38dp" android:layout_height="38dp" android:background="@drawable/bg_circle_purple" android:clickable="true" android:focusable="true">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="−" android:textSize="20sp" android:textColor="@color/white" android:layout_gravity="center"/>
                             </FrameLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-                <!--  Will memorize X verses  -->
                 <TextView android:id="@+id/tvWillMemorize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⭐ ستحفظ 7 آيات" android:textSize="15sp" android:textColor="@color/yellow_main" android:background="@drawable/bg_easy_badge" android:paddingHorizontal="14dp" android:paddingVertical="8dp" android:layout_gravity="center" android:layout_marginTop="14dp"/>
             </LinearLayout>
-            <!--  ── Card 3: Repeat Count ──  -->
+            <!--  Card 3: Repeat Count  -->
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/bg_rounded_card" android:padding="20dp" android:layout_marginTop="12dp">
-                <!--  Title  -->
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical|end">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="عدد مرات التكرار" android:textSize="18sp" android:textColor="@color/white" android:textStyle="bold"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" 🔄" android:textSize="18sp"/>
                 </LinearLayout>
-                <!--  Main counter  -->
                 <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_gravity="center" android:layout_marginTop="16dp">
                     <FrameLayout android:id="@+id/btnRepeatMinus" android:layout_width="44dp" android:layout_height="44dp" android:background="@drawable/bg_circle_purple" android:clickable="true" android:focusable="true">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="−" android:textSize="22sp" android:textColor="@color/white" android:layout_gravity="center"/>
@@ -110,7 +86,6 @@
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+" android:textSize="22sp" android:textColor="@color/white" android:layout_gravity="center"/>
                     </FrameLayout>
                 </LinearLayout>
-                <!--  Quick buttons  -->
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center" android:layout_marginTop="16dp" android:layoutDirection="rtl">
                     <TextView android:id="@+id/btnQuick3" android:layout_width="0dp" android:layout_height="42dp" android:layout_weight="1" android:text="3 مرات" android:textSize="14sp" android:textColor="@color/white" android:gravity="center" android:background="@drawable/bg_quick_btn_inactive" android:layout_marginHorizontal="4dp" android:clickable="true" android:focusable="true"/>
                     <TextView android:id="@+id/btnQuick5" android:layout_width="0dp" android:layout_height="42dp" android:layout_weight="1" android:text="5 مرات" android:textSize="14sp" android:textColor="#09092B" android:textStyle="bold" android:gravity="center" android:background="@drawable/bg_quick_btn_active" android:layout_marginHorizontal="4dp" android:clickable="true" android:focusable="true"/>
@@ -118,16 +93,14 @@
                     <TextView android:id="@+id/btnQuick10" android:layout_width="0dp" android:layout_height="42dp" android:layout_weight="1" android:text="10 مرات" android:textSize="14sp" android:textColor="@color/white" android:gravity="center" android:background="@drawable/bg_quick_btn_inactive" android:layout_marginHorizontal="4dp" android:clickable="true" android:focusable="true"/>
                 </LinearLayout>
             </LinearLayout>
-            <!--  Rocket + Start button  -->
+            <!--  Start button  -->
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="20dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🚀" android:textSize="32sp"/>
                 <Button android:id="@+id/btnStartHifzNow" android:layout_width="0dp" android:layout_height="60dp" android:layout_weight="1" android:text="▷ ابدأ الحفظ الآن" android:textSize="20sp" android:textColor="#09092B" android:textStyle="bold" android:background="@drawable/bg_button_yellow" android:layout_marginStart="10dp"/>
             </LinearLayout>
             <!--  Tip card  -->
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:background="@drawable/bg_tip_card" android:padding="14dp" android:gravity="center_vertical" android:layoutDirection="rtl" android:layout_marginTop="12dp">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="نصيحة: ابدأ بعدد قليل من الآيات وكرر كثيراً، فالتكرار سر الحفظ!" android:textStyle="bold" android:textSize="15sp" android:textColor="@color/text_dim" android:gravity="end">
-                    <![CDATA[ <b>نصيحة:</b> ]]>
-                </TextView>
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="نصيحة: ابدأ بعدد قليل من الآيات وكرر كثيراً، فالتكرار سر الحفظ!" android:textStyle="bold" android:textSize="15sp" android:textColor="@color/text_dim" android:gravity="end"/>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="💡" android:textSize="20sp" android:layout_marginStart="8dp"/>
             </LinearLayout>
         </LinearLayout>

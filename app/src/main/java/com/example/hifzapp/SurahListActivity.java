@@ -48,6 +48,8 @@ public class SurahListActivity extends BaseActivity  {
             public void onSurahClick(Surah surah) {
                 Intent intent = new Intent(SurahListActivity.this, HifzSetupActivity.class);
                 intent.putExtra("surah_name", surah.getName());
+                intent.putExtra("surah_number", surah.getNumber());
+                intent.putExtra("surah_verse_count", surah.getVerseCount());
                 startActivity(intent);
             }
         });
