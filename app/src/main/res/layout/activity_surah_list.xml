@@ -4,6 +4,13 @@
         <!--  Gold coin icon  -->
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🪙" android:textSize="30sp"/>
         <!--  Title  -->
+        <TextView
+            android:id="@+id/tvViewPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📖"
+            android:textSize="26sp"
+            android:padding="8dp"/>
         <TextView android:id="@+id/tvTitle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="اختر السورة" android:textSize="26sp" android:textColor="@color/yellow_main" android:textStyle="bold" android:gravity="center"/>
         <!--  Arrow back  -->
         <TextView android:id="@+id/tvBack" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="→" android:textSize="24sp" android:textColor="@color/white" android:padding="8dp"/>

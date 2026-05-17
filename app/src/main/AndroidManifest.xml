@@ -31,7 +31,7 @@
         <activity android:name=".SettingsActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".AboutActivity"/>
-
+        <activity android:name=".pageViewActivity"/>
     </application>
 
 </manifest>

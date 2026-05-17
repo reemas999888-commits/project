@@ -58,7 +58,12 @@ public class SurahListActivity extends BaseActivity  {
         rvSurahs.setAdapter(adapter);
 
         tvBack.setOnClickListener(v -> finish());
-
+        TextView tvViewPage = findViewById(R.id.tvViewPage);
+        tvViewPage.setOnClickListener(v -> {
+            Intent intent = new Intent(SurahListActivity.this, pageViewActivity.class);
+            intent.putExtra("page_number", 1);
+            startActivity(intent);
+        });
         tvFilterAll.setOnClickListener(v -> setFilter("all"));
         tvFilterJuz.setOnClickListener(v -> setFilter("juz"));
         tvFilterShort.setOnClickListener(v -> setFilter("short"));
