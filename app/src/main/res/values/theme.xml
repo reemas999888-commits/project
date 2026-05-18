@@ -10,4 +10,20 @@
         <item name="android:layoutDirection">rtl</item>
         <item name="android:supportsRtl">true</item>
     </style>
+
+    <style name="Theme_Dark" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/yellow_main</item>
+        <item name="android:windowBackground">@color/bg_dark</item>
+        <item name="android:statusBarColor">@color/bg_dark</item>
+        <item name="android:layoutDirection">rtl</item>
+        <item name="android:supportsRtl">true</item>
+    </style>
+
+    <style name="Theme_Light" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/yellow_main</item>
+        <item name="android:windowBackground">#f5f5f5</item>
+        <item name="android:statusBarColor">#f5f5f5</item>
+        <item name="android:layoutDirection">rtl</item>
+        <item name="android:supportsRtl">true</item>
+    </style>
 </resources>
