@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class CompletionActivity extends AppCompatActivity {
+public class CompletionActivity extends BaseActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -7,7 +7,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class HifzSetupActivity extends AppCompatActivity {
+public class HifzSetupActivity extends BaseActivity  {
 
     private TextView tvSetupSurahName, tvInfoSurahName, tvInfoVerseCount;
     private TextView tvFromVerse, tvToVerse, tvRepeatCount, tvWillMemorize;

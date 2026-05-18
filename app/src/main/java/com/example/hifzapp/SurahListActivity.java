@@ -18,7 +18,7 @@ import com.example.hifzapp.model.Surah;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SurahListActivity extends AppCompatActivity {
+public class SurahListActivity extends BaseActivity  {
 
     private RecyclerView rvSurahs;
     private SurahAdapter adapter;

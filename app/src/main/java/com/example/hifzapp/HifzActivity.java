@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Handler;
 import android.os.Looper;
-public class HifzActivity extends AppCompatActivity {
+public class HifzActivity extends BaseActivity  {
     private Handler autoHandler = new Handler(Looper.getMainLooper());
     private boolean isAutoPlaying = false;
     private Runnable autoRunnable;
