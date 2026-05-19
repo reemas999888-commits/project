@@ -7,25 +7,30 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hifzapp.adapter.SurahAdapter;
-import com.example.hifzapp.data.SurahData;
 import com.example.hifzapp.model.Surah;
+import com.example.hifzapp.model.SurahResponse;
+import com.example.hifzapp.api.ApiService;
+import com.example.hifzapp.api.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SurahListActivity extends BaseActivity  {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class SurahListActivity extends BaseActivity {
 
     private RecyclerView rvSurahs;
     private SurahAdapter adapter;
     private EditText etSearch;
     private TextView tvFilterAll, tvFilterJuz, tvFilterShort, tvBack;
 
-    private List<Surah> allSurahs;
+    private List<Surah> allSurahs = new ArrayList<>();
     private String currentFilter = "all";
 
     @Override
@@ -34,8 +39,6 @@ public class SurahListActivity extends BaseActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_surah_list);
 
-        allSurahs = SurahData.getAllSurahs();
-
         rvSurahs = findViewById(R.id.rvSurahs);
         etSearch = findViewById(R.id.etSearch);
         tvFilterAll = findViewById(R.id.tvFilterAll);
@@ -43,18 +46,16 @@ public class SurahListActivity extends BaseActivity  {
         tvFilterShort = findViewById(R.id.tvFilterShort);
         tvBack = findViewById(R.id.tvBack);
 
-        adapter = new SurahAdapter(allSurahs, new SurahAdapter.OnSurahClickListener() {
-            @Override
-            public void onSurahClick(Surah surah) {
-                Intent intent = new Intent(SurahListActivity.this, HifzSetupActivity.class);
-                intent.putExtra("surah_name", surah.getName());
-                intent.putExtra("surah_number", surah.getNumber());
-                intent.putExtra("surah_verse_count", surah.getVerseCount());
-                startActivity(intent);
-            }
+        rvSurahs.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new SurahAdapter(allSurahs, surah -> {
+            Intent intent = new Intent(SurahListActivity.this, HifzSetupActivity.class);
+            intent.putExtra("surah_name", surah.getName());
+            intent.putExtra("surah_number", surah.getNumber());
+            intent.putExtra("surah_verse_count", surah.getNumberOfAyahs());
+            startActivity(intent);
         });
 
-        rvSurahs.setLayoutManager(new LinearLayoutManager(this));
         rvSurahs.setAdapter(adapter);
 
         tvBack.setOnClickListener(v -> finish());
@@ -70,57 +71,69 @@ public class SurahListActivity extends BaseActivity  {
 
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int st, int c, int a) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int st, int b, int c) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 applyFilters(s.toString());
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable s) {}
+        });
+
+        loadSurahs();
+    }
+
+    private void loadSurahs() {
+
+        ApiService apiService =
+                RetrofitClient.getClient().create(ApiService.class);
+
+        apiService.getSurahs().enqueue(new Callback<SurahResponse>() {
+
+            @Override
+            public void onResponse(Call<SurahResponse> call,
+                                   Response<SurahResponse> response) {
+
+                if (response.body() != null) {
+
+                    allSurahs = response.body().getData();
+
+                    adapter.updateList(allSurahs);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SurahResponse> call, Throwable t) {
+                t.printStackTrace();
             }
         });
     }
 
     private void setFilter(String filter) {
         currentFilter = filter;
-
-        tvFilterAll.setBackgroundResource(R.drawable.bg_filter_inactive);
-        tvFilterAll.setTextColor(getResources().getColor(R.color.white));
-
-        tvFilterJuz.setBackgroundResource(R.drawable.bg_filter_inactive);
-        tvFilterJuz.setTextColor(getResources().getColor(R.color.white));
-
-        tvFilterShort.setBackgroundResource(R.drawable.bg_filter_inactive);
-        tvFilterShort.setTextColor(getResources().getColor(R.color.white));
-
-        TextView active = filter.equals("all")
-                ? tvFilterAll
-                : (filter.equals("juz") ? tvFilterJuz : tvFilterShort);
-
-        active.setBackgroundResource(R.drawable.bg_filter_active);
-        active.setTextColor(getResources().getColor(R.color.bg_dark));
-
         applyFilters(etSearch.getText().toString());
     }
 
     private void applyFilters(String query) {
+
         List<Surah> filtered = new ArrayList<>();
 
         for (Surah s : allSurahs) {
+
             boolean matchFilter = true;
 
             if (currentFilter.equals("juz")) {
-                matchFilter = s.isJuzAmma();
+                matchFilter = false; // API ما يدعم هذا حالياً
             }
 
             if (currentFilter.equals("short")) {
-                matchFilter = s.isShort();
+                matchFilter = false; // API ما يدعم هذا حالياً
             }
 
-            boolean matchSearch = query.isEmpty() || s.getName().contains(query);
+            boolean matchSearch =
+                    query.isEmpty() || s.getName().contains(query);
 
             if (matchFilter && matchSearch) {
                 filtered.add(s);
