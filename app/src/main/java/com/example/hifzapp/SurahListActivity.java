@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,7 +26,7 @@ public class SurahListActivity extends BaseActivity {
     private EditText etSearch;
     private TextView tvFilterAll, tvFilterJuz, tvFilterShort, tvBack;
 
-    private List<Surah> allSurahs = new ArrayList<>();
+    private List<Surah> allSurahs;
     private String currentFilter = "all";
 
     @Override
@@ -41,6 +43,23 @@ public class SurahListActivity extends BaseActivity {
         tvBack        = findViewById(R.id.tvBack);
 
         rvSurahs.setLayoutManager(new LinearLayoutManager(this));
+
+        // تفعيل السكرول بعجلة الماوس في المحاكي
+        rvSurahs.setOnGenericMotionListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_SCROLL) {
+                LinearLayoutManager lm = (LinearLayoutManager) rvSurahs.getLayoutManager();
+                if (lm != null) {
+                    float scrollY = event.getAxisValue(MotionEvent.AXIS_VSCROLL);
+                    int delta = (int) (-scrollY * 80);
+                    rvSurahs.scrollBy(0, delta);
+                }
+                return true;
+            }
+            return false;
+        });
+
+        // تحميل البيانات أولاً
+        allSurahs = SurahData.getAll();
 
         adapter = new SurahAdapter(allSurahs, surah -> {
             Intent intent = new Intent(SurahListActivity.this, HifzSetupActivity.class);
@@ -75,14 +94,36 @@ public class SurahListActivity extends BaseActivity {
             }
         });
 
-        // ← البيانات المحلية: فورية، بدون إنترنت
-        allSurahs = SurahData.getAll();
-        adapter.updateList(allSurahs);
+        applyFilters("");
+        updateFilterButtons();
     }
 
     private void setFilter(String filter) {
         currentFilter = filter;
+        updateFilterButtons();
         applyFilters(etSearch.getText().toString());
+    }
+
+    private void updateFilterButtons() {
+        tvFilterAll.setBackgroundResource(R.drawable.bg_filter_inactive);
+        tvFilterAll.setTextColor(getResources().getColor(R.color.white));
+
+        tvFilterJuz.setBackgroundResource(R.drawable.bg_filter_inactive);
+        tvFilterJuz.setTextColor(getResources().getColor(R.color.white));
+
+        tvFilterShort.setBackgroundResource(R.drawable.bg_filter_inactive);
+        tvFilterShort.setTextColor(getResources().getColor(R.color.white));
+
+        if (currentFilter.equals("all")) {
+            tvFilterAll.setBackgroundResource(R.drawable.bg_filter_active);
+            tvFilterAll.setTextColor(0xFF09092B);
+        } else if (currentFilter.equals("juz")) {
+            tvFilterJuz.setBackgroundResource(R.drawable.bg_filter_active);
+            tvFilterJuz.setTextColor(0xFF09092B);
+        } else if (currentFilter.equals("short")) {
+            tvFilterShort.setBackgroundResource(R.drawable.bg_filter_active);
+            tvFilterShort.setTextColor(0xFF09092B);
+        }
     }
 
     private void applyFilters(String query) {
@@ -92,10 +133,8 @@ public class SurahListActivity extends BaseActivity {
             boolean matchFilter = true;
 
             if (currentFilter.equals("juz")) {
-                // جزء عم: السور من 78 إلى 114
                 matchFilter = s.getNumber() >= 78;
             } else if (currentFilter.equals("short")) {
-                // السور القصيرة: أقل من 30 آية
                 matchFilter = s.getNumberOfAyahs() < 30;
             }
 
