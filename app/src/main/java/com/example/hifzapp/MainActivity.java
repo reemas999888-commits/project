@@ -4,7 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
-
+import androidx.viewpager2.widget.ViewPager2;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.hifzapp.database.DatabaseHelper;
 import com.example.hifzapp.database.Progress;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -16,6 +17,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ViewPager2 viewPager = findViewById(R.id.viewPager);
+
+        QuranAdapter adapter = new QuranAdapter(this);
+        viewPager.setAdapter(adapter);
         mood.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -188,5 +193,6 @@ public class MainActivity extends BaseActivity {
         }
 
         return "سورة الفاتحة";
+
     }
 }
