@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tvSurahName" type="id" />
+    <item name="tvSurahNumber" type="id" />
+    <item name="tvVerseCount" type="id" />
+    <item name="tvSurahType" type="id" />
+</resources>

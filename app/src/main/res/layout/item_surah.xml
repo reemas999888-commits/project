@@ -1,17 +1,100 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="80dp" android:background="@drawable/bg_rounded_card" android:layout_marginHorizontal="4dp" android:layout_marginVertical="5dp" android:layoutDirection="rtl">
-    <!--  Number circle (visual right side = RTL start)  -->
-    <FrameLayout android:id="@+id/flNumber" android:layout_width="52dp" android:layout_height="52dp" android:background="@drawable/bg_circle_purple" android:layout_marginStart="14dp" app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent">
-        <TextView android:id="@+id/tvSurahNumber" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1" android:textColor="@color/white" android:textSize="18sp" android:textStyle="bold" android:layout_gravity="center"/>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@drawable/bg_rounded_card"
+    android:layout_marginHorizontal="4dp"
+    android:layout_marginVertical="5dp"
+    android:layoutDirection="rtl">
+
+    <FrameLayout
+        android:id="@+id/flNumber"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:background="@drawable/bg_circle_purple"
+        android:layout_marginStart="14dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tvSurahNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
     </FrameLayout>
-    <!--  Surah Name + details (center-right)  -->
-    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="end" android:layout_marginEnd="16dp" android:layout_marginStart="8dp" app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toEndOf="@id/flNumber" app:layout_constraintEnd_toStartOf="@id/tvEasyBadge">
-        <TextView android:id="@+id/tvSurahName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="سورة الفاتحة" android:textColor="@color/white" android:textSize="20sp" android:textStyle="bold"/>
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layoutDirection="rtl" android:layout_marginTop="4dp">
-            <TextView android:id="@+id/tvVerseCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="7 آية" android:textColor="@color/gray_text" android:textSize="13sp"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" 📖 " android:textSize="13sp"/>
-            <TextView android:id="@+id/tvSurahType" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="مكية" android:textColor="@color/gray_text" android:textSize="13sp"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/flNumber"
+        app:layout_constraintEnd_toStartOf="@id/tvEasyBadge">
+
+        <TextView
+            android:id="@+id/tvSurahName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="سورة الفاتحة"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layoutDirection="rtl"
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:id="@+id/tvVerseCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/gray_text"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" 📖 "
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tvSurahType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="مكية"
+                android:textColor="@color/gray_text"
+                android:textSize="13sp" />
+
         </LinearLayout>
     </LinearLayout>
-    <!--  Easy badge (visual left = RTL end)  -->
-    <TextView android:id="@+id/tvEasyBadge" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⭐ سهلة" android:textColor="@color/yellow_main" android:textSize="13sp" android:paddingHorizontal="10dp" android:paddingVertical="5dp" android:background="@drawable/bg_easy_badge" android:visibility="gone" android:layout_marginEnd="12dp" app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvEasyBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="⭐ سهلة"
+        android:textColor="@color/yellow_main"
+        android:textSize="13sp"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp"
+        android:background="@drawable/bg_easy_badge"
+        android:visibility="gone"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

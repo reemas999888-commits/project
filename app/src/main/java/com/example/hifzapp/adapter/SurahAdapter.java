@@ -38,7 +38,18 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
     @Override
     public void onBindViewHolder(@NonNull SurahViewHolder holder, int position) {
         Surah surah = surahList.get(position);
+
+        // رقم السورة
+        holder.tvSurahNumber.setText(String.valueOf(surah.getNumber()));
+
+        // اسم السورة
         holder.tvSurahName.setText(surah.getName());
+
+        // عدد الآيات
+        holder.tvVerseCount.setText(surah.getNumberOfAyahs() + " آية");
+
+        // نوع السورة (مكية/مدنية)
+        holder.tvSurahType.setText(surah.getRevelationTypeArabic());
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -58,11 +69,17 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
     }
 
     public static class SurahViewHolder extends RecyclerView.ViewHolder {
+        TextView tvSurahNumber;
         TextView tvSurahName;
+        TextView tvVerseCount;
+        TextView tvSurahType;
 
         public SurahViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvSurahName = itemView.findViewById(R.id.tvSurahName);
+            tvSurahNumber = itemView.findViewById(R.id.tvSurahNumber);
+            tvSurahName   = itemView.findViewById(R.id.tvSurahName);
+            tvVerseCount  = itemView.findViewById(R.id.tvVerseCount);
+            tvSurahType   = itemView.findViewById(R.id.tvSurahType);
         }
     }
 }
