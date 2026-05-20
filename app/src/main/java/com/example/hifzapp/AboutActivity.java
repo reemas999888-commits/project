@@ -13,6 +13,5 @@ public class AboutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about);
 
         TextView tvBack = findViewById(R.id.tvAboutBack);
-        tvBack.setOnClickListener(v -> finish());
     }
 }
