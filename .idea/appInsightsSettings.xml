@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.hifzapp" />
+                  <option name="mobileSdkAppId" value="1:145285827517:android:642ab10cfe45a83b2420d4" />
+                  <option name="projectId" value="hifzapp-225f1" />
+                  <option name="projectNumber" value="145285827517" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

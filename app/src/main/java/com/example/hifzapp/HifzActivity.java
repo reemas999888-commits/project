@@ -8,8 +8,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
+
 
 import com.example.hifzapp.database.DatabaseHelper;
 import com.example.hifzapp.database.Progress;
@@ -70,6 +73,7 @@ public class HifzActivity extends BaseActivity {
     private int repeatCount = 5;
     private int currentVerse = 1;
     private int currentRepeat = 1;
+    private ImageView imgPageHifz;
 
     private static final String[] FATIHA_VERSES = {
             "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ",
@@ -86,7 +90,7 @@ public class HifzActivity extends BaseActivity {
         mood.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hifz);
-
+        imgPageHifz = findViewById(R.id.imgPageHifz);
         dbHelper = new DatabaseHelper(this);
 
         surahName = getIntent().getStringExtra("surah_name");
@@ -362,8 +366,41 @@ public class HifzActivity extends BaseActivity {
 
         if (dbAyah != null && dbAyah.getText() != null && !dbAyah.getText().isEmpty()) {
             tvVerseText.setText(dbAyah.getText());
+            // تحميل صورة الصفحة
+            int pageNum = (dbAyah != null && dbAyah.pageNumber > 0) ? dbAyah.pageNumber : 1;
+            String pageImageUrl = "https://cdn.islamic.network/quran/images/high-resolution/page"
+                    + String.format("%03d", pageNum) + ".png";
+            imgPageHifz.setVisibility(android.view.View.VISIBLE);
+            Glide.with(this)
+                    .load(pageImageUrl)
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .into(imgPageHifz);
         } else {
-            tvVerseText.setText(FATIHA_VERSES[(currentVerse - 1) % FATIHA_VERSES.length]);
+            // جلب النص من AlQuran Cloud API
+            int absoluteAyah = SURAH_OFFSET[surahNumber] + currentVerse;
+            String apiUrl = "https://api.alquran.cloud/v1/ayah/" + absoluteAyah + "/quran-uthmani";
+
+            new Thread(() -> {
+                try {
+                    java.net.URL url = new java.net.URL(apiUrl);
+                    java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    java.io.BufferedReader reader = new java.io.BufferedReader(
+                            new java.io.InputStreamReader(conn.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) sb.append(line);
+                    reader.close();
+
+                    org.json.JSONObject json = new org.json.JSONObject(sb.toString());
+                    String text = json.getJSONObject("data").getString("text");
+
+                    runOnUiThread(() -> tvVerseText.setText(text));
+                } catch (Exception e) {
+                    runOnUiThread(() -> tvVerseText.setText(
+                            FATIHA_VERSES[(currentVerse - 1) % FATIHA_VERSES.length]));
+                }
+            }).start();
         }
 
         updateRepetitionStars();
