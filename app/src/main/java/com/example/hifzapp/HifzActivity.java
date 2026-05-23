@@ -2,17 +2,23 @@ package com.example.hifzapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Handler;
-import android.os.Looper;
-public class HifzActivity extends BaseActivity  {
+
+import com.example.hifzapp.database.DatabaseHelper;
+import com.example.hifzapp.database.Progress;
+
+public class HifzActivity extends BaseActivity {
+
     private Handler autoHandler = new Handler(Looper.getMainLooper());
     private boolean isAutoPlaying = false;
     private Runnable autoRunnable;
+
+    private DatabaseHelper dbHelper;
+
     private TextView tvHifzSurahName, tvHifzVerseLabel;
     private TextView tvProgressVerse, tvProgressPercent;
     private ProgressBar progressHifz;
@@ -30,9 +36,7 @@ public class HifzActivity extends BaseActivity  {
 
     private int currentVerse = 1;
     private int currentRepeat = 1;
-    private boolean isPlaying = false;
 
-    // Sample verse texts for UI demo (placeholder)
     private String[] sampleVerses = {
             "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ",
             "ٱلۡحَمۡدُ لِلَّهِ رَبِّ ٱلۡعَـٰلَمِینَ",
@@ -49,45 +53,53 @@ public class HifzActivity extends BaseActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hifz);
 
-        // Get intent data
-        surahName   = getIntent().getStringExtra("surah_name");
-        fromVerse   = getIntent().getIntExtra("from_verse", 1);
-        toVerse     = getIntent().getIntExtra("to_verse", 7);
-        repeatCount = getIntent().getIntExtra("repeat_count", 5);
-        if (surahName == null) surahName = "سورة الفاتحة";
+        dbHelper = new DatabaseHelper(this);
 
-        currentVerse  = fromVerse;
+        surahName = getIntent().getStringExtra("surah_name");
+        fromVerse = getIntent().getIntExtra("from_verse", 1);
+        toVerse = getIntent().getIntExtra("to_verse", 7);
+        repeatCount = getIntent().getIntExtra("repeat_count", 5);
+
+        if (surahName == null) {
+            surahName = "سورة الفاتحة";
+        }
+
+        currentVerse = fromVerse;
         currentRepeat = 1;
 
-        // Bind views
-        tvHifzSurahName  = findViewById(R.id.tvHifzSurahName);
+        Progress progress = dbHelper.getProgress();
+
+        if (progress != null) {
+            currentVerse = progress.currentAyah;
+        }
+
+        dbHelper.saveProgress(1, currentVerse);
+
+        tvHifzSurahName = findViewById(R.id.tvHifzSurahName);
         tvHifzVerseLabel = findViewById(R.id.tvHifzVerseLabel);
-        tvProgressVerse  = findViewById(R.id.tvProgressVerse);
-        tvProgressPercent= findViewById(R.id.tvProgressPercent);
-        progressHifz     = findViewById(R.id.progressHifz);
-        tvCurrentVerseNum= findViewById(R.id.tvCurrentVerseNum);
-        tvVerseText      = findViewById(R.id.tvVerseText);
-        tvRepStar1       = findViewById(R.id.tvRepStar1);
-        tvRepStar2       = findViewById(R.id.tvRepStar2);
-        tvRepStar3       = findViewById(R.id.tvRepStar3);
-        tvRepStar4       = findViewById(R.id.tvRepStar4);
-        tvRepStar5       = findViewById(R.id.tvRepStar5);
-        tvRepProgress    = findViewById(R.id.tvRepProgress);
-        btnPrev          = findViewById(R.id.btnPrev);
-        btnPlayPause     = findViewById(R.id.btnPlayPause);
-        btnRepeat        = findViewById(R.id.btnRepeat);
-        btnNext          = findViewById(R.id.btnNext);
-        tvPlayPauseIcon  = findViewById(R.id.tvPlayPauseIcon);
-        tvHifzClose      = findViewById(R.id.tvHifzClose);
+        tvProgressVerse = findViewById(R.id.tvProgressVerse);
+        tvProgressPercent = findViewById(R.id.tvProgressPercent);
+        progressHifz = findViewById(R.id.progressHifz);
+        tvCurrentVerseNum = findViewById(R.id.tvCurrentVerseNum);
+        tvVerseText = findViewById(R.id.tvVerseText);
+        tvRepStar1 = findViewById(R.id.tvRepStar1);
+        tvRepStar2 = findViewById(R.id.tvRepStar2);
+        tvRepStar3 = findViewById(R.id.tvRepStar3);
+        tvRepStar4 = findViewById(R.id.tvRepStar4);
+        tvRepStar5 = findViewById(R.id.tvRepStar5);
+        tvRepProgress = findViewById(R.id.tvRepProgress);
+        btnPrev = findViewById(R.id.btnPrev);
+        btnPlayPause = findViewById(R.id.btnPlayPause);
+        btnRepeat = findViewById(R.id.btnRepeat);
+        btnNext = findViewById(R.id.btnNext);
+        tvPlayPauseIcon = findViewById(R.id.tvPlayPauseIcon);
+        tvHifzClose = findViewById(R.id.tvHifzClose);
 
         tvHifzSurahName.setText(surahName);
         updateUI();
 
-        // Close
         tvHifzClose.setOnClickListener(v -> finish());
 
-        // Play/Pause
-        // Play/Pause — داخل onCreate
         btnPlayPause.setOnClickListener(v -> {
             if (isAutoPlaying) {
                 stopAutoLoop();
@@ -96,33 +108,30 @@ public class HifzActivity extends BaseActivity  {
             }
         });
 
-        // Next verse
         btnNext.setOnClickListener(v -> {
             if (currentVerse < toVerse) {
                 currentVerse++;
                 currentRepeat = 1;
                 updateUI();
+                dbHelper.saveProgress(1, currentVerse);
             } else {
-                // All done
                 openCompletion();
             }
         });
 
-        // Prev verse
         btnPrev.setOnClickListener(v -> {
             if (currentVerse > fromVerse) {
                 currentVerse--;
                 currentRepeat = 1;
                 updateUI();
+                dbHelper.saveProgress(1, currentVerse);
             }
         });
 
-        // Repeat current
         btnRepeat.setOnClickListener(v -> {
             if (currentRepeat < repeatCount) {
                 currentRepeat++;
             } else {
-                // Move to next verse
                 if (currentVerse < toVerse) {
                     currentVerse++;
                     currentRepeat = 1;
@@ -131,9 +140,12 @@ public class HifzActivity extends BaseActivity  {
                     return;
                 }
             }
+
             updateUI();
+            dbHelper.saveProgress(1, currentVerse);
         });
     }
+
     private void startAutoLoop() {
         isAutoPlaying = true;
         tvPlayPauseIcon.setText("⏸");
@@ -143,19 +155,20 @@ public class HifzActivity extends BaseActivity  {
             public void run() {
                 if (!isAutoPlaying) return;
 
-                // انتقل للتكرار التالي أو الآية التالية
                 if (currentRepeat < repeatCount) {
                     currentRepeat++;
                     updateUI();
-                    // انتظر ثانيتين بين كل تكرار
+                    dbHelper.saveProgress(1, currentVerse);
                     autoHandler.postDelayed(this, 2000);
+
                 } else if (currentVerse < toVerse) {
                     currentVerse++;
                     currentRepeat = 1;
                     updateUI();
+                    dbHelper.saveProgress(1, currentVerse);
                     autoHandler.postDelayed(this, 2000);
+
                 } else {
-                    // انتهى كل شيء
                     isAutoPlaying = false;
                     openCompletion();
                 }
@@ -168,6 +181,7 @@ public class HifzActivity extends BaseActivity  {
     private void stopAutoLoop() {
         isAutoPlaying = false;
         tvPlayPauseIcon.setText("▶");
+
         if (autoRunnable != null) {
             autoHandler.removeCallbacks(autoRunnable);
         }
@@ -175,10 +189,10 @@ public class HifzActivity extends BaseActivity  {
 
     private void updateUI() {
         int totalVerses = toVerse - fromVerse + 1;
-        int verseIndex  = currentVerse - fromVerse; // 0-based
-        int totalDone   = verseIndex * repeatCount + (currentRepeat - 1);
-        int totalAll    = totalVerses * repeatCount;
-        int percent     = totalAll > 0 ? (totalDone * 100) / totalAll : 0;
+        int verseIndex = currentVerse - fromVerse;
+        int totalDone = verseIndex * repeatCount + (currentRepeat - 1);
+        int totalAll = totalVerses * repeatCount;
+        int percent = totalAll > 0 ? (totalDone * 100) / totalAll : 0;
 
         tvHifzVerseLabel.setText("الآية " + currentVerse + " من " + (fromVerse + totalVerses - 1));
         tvProgressVerse.setText((verseIndex + 1) + " / " + totalVerses + " آيات");
@@ -186,20 +200,19 @@ public class HifzActivity extends BaseActivity  {
         progressHifz.setProgress(percent);
         tvCurrentVerseNum.setText(String.valueOf(currentVerse));
 
-        // Verse text (use sample or verse number placeholder)
         int sampleIdx = (currentVerse - 1) % sampleVerses.length;
         tvVerseText.setText(sampleVerses[sampleIdx]);
 
-        // Repetition stars
         updateRepetitionStars();
         tvRepProgress.setText(currentRepeat + " من " + repeatCount);
     }
 
     private void updateRepetitionStars() {
         TextView[] stars = {tvRepStar1, tvRepStar2, tvRepStar3, tvRepStar4, tvRepStar5};
-        // Show up to 5 stars representing progress (scaled)
+
         for (int i = 0; i < 5; i++) {
-            float threshold = ((float)(i + 1) / 5f) * repeatCount;
+            float threshold = ((float) (i + 1) / 5f) * repeatCount;
+
             if (currentRepeat >= threshold) {
                 stars[i].setText("★");
                 stars[i].setTextColor(getResources().getColor(R.color.yellow_main));
@@ -212,12 +225,14 @@ public class HifzActivity extends BaseActivity  {
 
     private void openCompletion() {
         int totalVerses = toVerse - fromVerse + 1;
+
         Intent intent = new Intent(HifzActivity.this, CompletionActivity.class);
-        intent.putExtra("surah_name",   surahName);
-        intent.putExtra("verse_count",  totalVerses);
+        intent.putExtra("surah_name", surahName);
+        intent.putExtra("verse_count", totalVerses);
         startActivity(intent);
         finish();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
