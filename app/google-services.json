@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "145285827517",
+    "firebase_url": "https://hifzapp-225f1-default-rtdb.firebaseio.com",
+    "project_id": "hifzapp-225f1",
+    "storage_bucket": "hifzapp-225f1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145285827517:android:642ab10cfe45a83b2420d4",
+        "android_client_info": {
+          "package_name": "com.example.hifzapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfcguLYYn43oasCJFINY6t8Wb7d_BSsHY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

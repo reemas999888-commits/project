@@ -9,47 +9,68 @@ import android.widget.TextView;
 
 public class SettingsActivity extends BaseActivity {
 
+    private Switch switchDarkMode;
+    private SeekBar seekFontSize;
+    private TextView tvAboutLink;
+    private TextView tvSettingsBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mood.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        // نفس اسم الـ prefs في mood
         SharedPreferences prefs = getSharedPreferences(mood.PREFS_NAME, MODE_PRIVATE);
 
-        // السويتش - الوضع الليلي
-        Switch switchDarkMode = findViewById(R.id.switchDarkMode);
-        boolean isLight = prefs.getBoolean(mood.KEY_LIGHT_MODE, false);
-        switchDarkMode.setChecked(isLight);
-        switchDarkMode.setOnCheckedChangeListener((btn, checked) -> {
-            prefs.edit().putBoolean(mood.KEY_LIGHT_MODE, checked).apply();
-            // أعد تشغيل التطبيق من الأول
-            Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+        switchDarkMode = findViewById(R.id.switchDarkMode);
+        seekFontSize = findViewById(R.id.seekFontSize);
+        tvAboutLink = findViewById(R.id.tvAboutLink);
+        tvSettingsBack = findViewById(R.id.tvSettingsBack);
+
+        /*
+         * السويتش في الواجهة مكتوب عليه: الوضع العادي
+         *
+         * إذا السويتش شغال = الوضع العادي / الأبيض
+         * إذا السويتش طافي = الوضع الداكن
+         *
+         * الافتراضي: طافي، يعني التطبيق داكن.
+         */
+        switchDarkMode.setChecked(mood.isLightMode(this));
+
+        switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mood.setLightMode(this, isChecked);
+            recreate();
         });
 
-        // حجم الخط
-        SeekBar seekFontSize = findViewById(R.id.seekFontSize);
-        seekFontSize.setProgress(prefs.getInt("font_size", 2));
+        int savedFontSize = prefs.getInt(BaseActivity.KEY_FONT_SIZE, 2);
+        seekFontSize.setProgress(savedFontSize);
+
         seekFontSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                prefs.edit().putInt("font_size", progress).apply();
-                recreate();
+                if (fromUser) {
+                    prefs.edit()
+                            .putInt(BaseActivity.KEY_FONT_SIZE, progress)
+                            .apply();
+
+                    recreate();
+                }
             }
-            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
-            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
 
-        // حول التطبيق
-        TextView tvAbout = findViewById(R.id.tvAboutLink);
-        tvAbout.setOnClickListener(v ->
-                startActivity(new Intent(SettingsActivity.this, AboutActivity.class))
-        );
+        tvAboutLink.setOnClickListener(v -> {
+            Intent intent = new Intent(SettingsActivity.this, AboutActivity.class);
+            startActivity(intent);
+        });
 
-        // زر الرجوع
-        TextView tvBack = findViewById(R.id.tvSettingsBack);
-        tvBack.setOnClickListener(v -> finish());
+        tvSettingsBack.setOnClickListener(v -> finish());
     }
 }
