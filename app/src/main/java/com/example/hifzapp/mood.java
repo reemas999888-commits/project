@@ -1,19 +1,37 @@
 package com.example.hifzapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 public class mood {
-    public static final String PREFS_NAME = "hifz_prefs";
-    public static final String KEY_LIGHT_MODE = "light_mode";
+
+    private static final String PREF_NAME = "theme_pref";
+    private static final String KEY_DARK_MODE = "dark_mode";
+
+    public static void setDarkMode(Context context, boolean isDark) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(KEY_DARK_MODE, isDark).apply();
+
+        if (isDark) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+    }
+
+    public static boolean isDarkMode(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return prefs.getBoolean(KEY_DARK_MODE, true);
+    }
 
     public static void applyTheme(Activity activity) {
-        SharedPreferences prefs = activity.getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
-        boolean isLight = prefs.getBoolean(KEY_LIGHT_MODE, false);
-        if (isLight) {
-            activity.setTheme(R.style.Theme_Light);
+        if (isDarkMode(activity)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
-            activity.setTheme(R.style.Theme_Dark);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 }

@@ -8,26 +8,34 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME    = "hifz.db";
-    private static final int    DB_VERSION = 1;
+    private static final String DB_NAME = "hifz.db";
+    private static final int DB_VERSION = 3;
 
-    // ── جدول الآيات ──────────────────────────────
     private static final String TABLE_AYAHS =
             "CREATE TABLE ayahs (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "surah_number INTEGER," +
-                    "ayah_number  INTEGER," +
-                    "page_number  INTEGER," +
-                    "ayah_text    TEXT," +
-                    "audio_url    TEXT)";
+                    "ayah_number INTEGER," +
+                    "page_number INTEGER," +
+                    "ayah_text TEXT," +
+                    "audio_url TEXT)";
 
-    // ── جدول تقدم المستخدم ───────────────────────
     private static final String TABLE_PROGRESS =
             "CREATE TABLE progress (" +
-                    "id            INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "current_surah INTEGER," +
-                    "current_ayah  INTEGER," +
-                    "last_used     TEXT)";
+                    "current_ayah INTEGER," +
+                    "last_used TEXT)";
+
+    private static final String TABLE_DAILY_CHALLENGE =
+            "CREATE TABLE daily_challenge (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "challenge_date TEXT UNIQUE," +
+                    "surah_number INTEGER," +
+                    "surah_name TEXT," +
+                    "goal_type TEXT," +
+                    "goal_target INTEGER," +
+                    "progress_count INTEGER)";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -37,40 +45,56 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(TABLE_AYAHS);
         db.execSQL(TABLE_PROGRESS);
+        db.execSQL(TABLE_DAILY_CHALLENGE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS ayahs");
-        db.execSQL("DROP TABLE IF EXISTS progress");
-        onCreate(db);
+        if (oldVersion < 2) {
+            db.execSQL(TABLE_DAILY_CHALLENGE);
+        }
+
+        if (oldVersion < 3) {
+            db.execSQL("DROP TABLE IF EXISTS daily_challenge");
+            db.execSQL(TABLE_DAILY_CHALLENGE);
+        }
     }
 
-    // ── إدراج آية أو تحديثها ─────────────────────
     public void insertOrUpdateAyah(int surahNum, int ayahNum, int pageNum,
                                    String text, String audioUrl) {
         SQLiteDatabase db = getWritableDatabase();
+
         ContentValues cv = new ContentValues();
         cv.put("surah_number", surahNum);
-        cv.put("ayah_number",  ayahNum);
-        cv.put("page_number",  pageNum);
-        cv.put("ayah_text",    text);
-        cv.put("audio_url",    audioUrl);
+        cv.put("ayah_number", ayahNum);
+        cv.put("page_number", pageNum);
+        cv.put("ayah_text", text);
+        cv.put("audio_url", audioUrl);
 
-        int rows = db.update("ayahs", cv,
+        int rows = db.update(
+                "ayahs",
+                cv,
                 "surah_number=? AND ayah_number=?",
-                new String[]{String.valueOf(surahNum), String.valueOf(ayahNum)});
+                new String[]{String.valueOf(surahNum), String.valueOf(ayahNum)}
+        );
 
-        if (rows == 0) db.insert("ayahs", null, cv);
+        if (rows == 0) {
+            db.insert("ayahs", null, cv);
+        }
     }
 
-    // ── جلب آية واحدة ────────────────────────────
     public Ayah getAyah(int surahNum, int ayahNum) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.query("ayahs", null,
+
+        Cursor c = db.query(
+                "ayahs",
+                null,
                 "surah_number=? AND ayah_number=?",
                 new String[]{String.valueOf(surahNum), String.valueOf(ayahNum)},
-                null, null, null);
+                null,
+                null,
+                null
+        );
 
         if (c.moveToFirst()) {
             Ayah ayah = new Ayah(
@@ -82,33 +106,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     null,
                     c.getString(c.getColumnIndexOrThrow("audio_url"))
             );
+
             c.close();
             return ayah;
         }
+
         c.close();
         return null;
     }
 
-    // ── حفظ تقدم المستخدم ────────────────────────
     public void saveProgress(int surahNum, int ayahNum) {
         SQLiteDatabase db = getWritableDatabase();
+
         ContentValues cv = new ContentValues();
         cv.put("current_surah", surahNum);
-        cv.put("current_ayah",  ayahNum);
+        cv.put("current_ayah", ayahNum);
         cv.put("last_used", new java.util.Date().toString());
 
         Cursor c = db.rawQuery("SELECT id FROM progress LIMIT 1", null);
+
         if (c.moveToFirst()) {
             db.update("progress", cv, null, null);
         } else {
             db.insert("progress", null, cv);
         }
+
         c.close();
     }
 
-    // ── استرجاع تقدم المستخدم ────────────────────
     public Progress getProgress() {
         SQLiteDatabase db = getReadableDatabase();
+
         Cursor c = db.rawQuery("SELECT * FROM progress LIMIT 1", null);
 
         if (c.moveToFirst()) {
@@ -117,10 +145,120 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     c.getInt(c.getColumnIndexOrThrow("current_ayah")),
                     c.getString(c.getColumnIndexOrThrow("last_used"))
             );
+
             c.close();
             return p;
         }
+
         c.close();
         return null;
+    }
+
+    private String getTodayDate() {
+        java.text.SimpleDateFormat sdf =
+                new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US);
+        return sdf.format(new java.util.Date());
+    }
+
+    public void saveTodayChallenge(int surahNumber,
+                                   String surahName,
+                                   String goalType,
+                                   int goalTarget) {
+
+        SQLiteDatabase db = getWritableDatabase();
+        String today = getTodayDate();
+
+        ContentValues cv = new ContentValues();
+        cv.put("challenge_date", today);
+        cv.put("surah_number", surahNumber);
+        cv.put("surah_name", surahName);
+        cv.put("goal_type", goalType);
+        cv.put("goal_target", goalTarget);
+
+        Cursor c = db.rawQuery(
+                "SELECT id FROM daily_challenge WHERE challenge_date=? LIMIT 1",
+                new String[]{today}
+        );
+
+        if (c.moveToFirst()) {
+            cv.put("progress_count", 0);
+
+            db.update(
+                    "daily_challenge",
+                    cv,
+                    "challenge_date=?",
+                    new String[]{today}
+            );
+        } else {
+            cv.put("progress_count", 0);
+            db.insert("daily_challenge", null, cv);
+        }
+
+        c.close();
+    }
+
+    public Challenge getTodayChallenge() {
+        SQLiteDatabase db = getReadableDatabase();
+        String today = getTodayDate();
+
+        Cursor c = db.rawQuery(
+                "SELECT * FROM daily_challenge WHERE challenge_date=? LIMIT 1",
+                new String[]{today}
+        );
+
+        if (c.moveToFirst()) {
+            Challenge challenge = new Challenge(
+                    c.getInt(c.getColumnIndexOrThrow("id")),
+                    c.getString(c.getColumnIndexOrThrow("challenge_date")),
+                    c.getInt(c.getColumnIndexOrThrow("surah_number")),
+                    c.getString(c.getColumnIndexOrThrow("surah_name")),
+                    c.getString(c.getColumnIndexOrThrow("goal_type")),
+                    c.getInt(c.getColumnIndexOrThrow("goal_target")),
+                    c.getInt(c.getColumnIndexOrThrow("progress_count"))
+            );
+
+            c.close();
+            return challenge;
+        }
+
+        c.close();
+        return null;
+    }
+
+    public void addTodayChallengeProgress(int completedSurahNumber,
+                                          int versesCount,
+                                          int repetitionsCount) {
+
+        Challenge challenge = getTodayChallenge();
+
+        if (challenge == null) {
+            return;
+        }
+
+        if (challenge.surahNumber != completedSurahNumber) {
+            return;
+        }
+
+        int addCount;
+
+        if (challenge.goalType.equals("repetitions")) {
+            addCount = repetitionsCount;
+        } else {
+            addCount = versesCount;
+        }
+
+        int newProgress = challenge.progressCount + addCount;
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put("progress_count", newProgress);
+
+        db.update(
+                "daily_challenge",
+                cv,
+                "id=?",
+                new String[]{String.valueOf(challenge.id)}
+        );
     }
 }
