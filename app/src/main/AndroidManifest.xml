@@ -19,6 +19,7 @@
         <activity android:name=".HifzSetupActivity" />
         <activity android:name=".HifzActivity" />
         <activity android:name=".CompletionActivity" />
+        <activity android:name=".HifzHistoryActivity" />
 
         <activity
             android:name=".SettingsActivity"

@@ -5,11 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
+import java.util.ArrayList;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "hifz.db";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
 
     private static final String TABLE_AYAHS =
             "CREATE TABLE ayahs (" +
@@ -36,7 +36,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "goal_type TEXT," +
                     "goal_target INTEGER," +
                     "progress_count INTEGER)";
-
+    private static final String TABLE_SAVED_HIFZ =
+            "CREATE TABLE saved_hifz (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "surah_number INTEGER," +
+                    "surah_name TEXT," +
+                    "from_verse INTEGER," +
+                    "to_verse INTEGER," +
+                    "repeat_count INTEGER," +
+                    "verse_count INTEGER," +
+                    "saved_date TEXT)";
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -46,6 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(TABLE_AYAHS);
         db.execSQL(TABLE_PROGRESS);
         db.execSQL(TABLE_DAILY_CHALLENGE);
+        db.execSQL(TABLE_SAVED_HIFZ);
     }
 
     @Override
@@ -57,6 +67,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (oldVersion < 3) {
             db.execSQL("DROP TABLE IF EXISTS daily_challenge");
             db.execSQL(TABLE_DAILY_CHALLENGE);
+        }
+
+        if (oldVersion < 4) {
+            db.execSQL(TABLE_SAVED_HIFZ);
         }
     }
 
@@ -260,5 +274,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "id=?",
                 new String[]{String.valueOf(challenge.id)}
         );
+    }
+    public void saveCompletedHifz(int surahNumber,
+                                  String surahName,
+                                  int fromVerse,
+                                  int toVerse,
+                                  int repeatCount,
+                                  int verseCount) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put("surah_number", surahNumber);
+        cv.put("surah_name", surahName);
+        cv.put("from_verse", fromVerse);
+        cv.put("to_verse", toVerse);
+        cv.put("repeat_count", repeatCount);
+        cv.put("verse_count", verseCount);
+        cv.put("saved_date", new java.util.Date().toString());
+
+        db.insert("saved_hifz", null, cv);
+    }
+
+    public ArrayList<String> getAllSavedHifz() {
+        ArrayList<String> list = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.rawQuery(
+                "SELECT * FROM saved_hifz ORDER BY id DESC",
+                null
+        );
+
+        while (c.moveToNext()) {
+            String surahName = c.getString(c.getColumnIndexOrThrow("surah_name"));
+            int fromVerse = c.getInt(c.getColumnIndexOrThrow("from_verse"));
+            int toVerse = c.getInt(c.getColumnIndexOrThrow("to_verse"));
+            int repeatCount = c.getInt(c.getColumnIndexOrThrow("repeat_count"));
+            int verseCount = c.getInt(c.getColumnIndexOrThrow("verse_count"));
+
+            String text =
+                    "🌙 " + surahName + "\n" +
+                            "من الآية " + fromVerse + " إلى الآية " + toVerse + "\n" +
+                            "عدد الآيات: " + verseCount + "\n" +
+                            "عدد التكرار: " + repeatCount + " مرات";
+
+            list.add(text);
+        }
+
+        c.close();
+        return list;
     }
 }

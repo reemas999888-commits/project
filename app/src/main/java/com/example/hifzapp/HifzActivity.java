@@ -328,7 +328,14 @@ public class HifzActivity extends BaseActivity {
 
         int completedVerses = toVerse - fromVerse + 1;
         int completedRepetitions = completedVerses * repeatCount;
-
+        dbHelper.saveCompletedHifz(
+                surahNumber,
+                surahName,
+                fromVerse,
+                toVerse,
+                repeatCount,
+                completedVerses
+        );
         dbHelper.addTodayChallengeProgress(
                 surahNumber,
                 completedVerses,

@@ -50,8 +50,9 @@ public class MainActivity extends BaseActivity {
             int id = item.getItemId();
 
             if (id == R.id.nav_hifz) {
+                Intent intent = new Intent(MainActivity.this, HifzHistoryActivity.class);
+                startActivity(intent);
                 return true;
-
             } else if (id == R.id.nav_achievements) {
                 Intent intent = new Intent(MainActivity.this, ChallengeActivity.class);
                 startActivity(intent);
