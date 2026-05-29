@@ -6,7 +6,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
-
+import android.graphics.drawable.Drawable;
+import java.io.InputStream;
 public class pageViewActivity extends BaseActivity {
 
     private ImageView imgPage;
@@ -14,6 +15,9 @@ public class pageViewActivity extends BaseActivity {
     private Button btnNextPage, btnPrevPage;
 
     private int currentPage = 1;
+    private int startPage = 1;
+    private int endPage = 604;
+    private String surahName = "";
     private static final int TOTAL_PAGES = 604;
 
     @Override
@@ -22,6 +26,13 @@ public class pageViewActivity extends BaseActivity {
         setContentView(R.layout.activity_page_view);
 
         currentPage = getIntent().getIntExtra("page_number", 1);
+        startPage = getIntent().getIntExtra("start_page", 1);
+        endPage = getIntent().getIntExtra("end_page", TOTAL_PAGES);
+        surahName = getIntent().getStringExtra("surah_name");
+
+        if (surahName == null) {
+            surahName = "";
+        }
 
         imgPage     = findViewById(R.id.imgPage);
         tvPageTitle = findViewById(R.id.tvPageTitle);
@@ -34,34 +45,46 @@ public class pageViewActivity extends BaseActivity {
         tvPageBack.setOnClickListener(v -> finish());
 
         btnNextPage.setOnClickListener(v -> {
-            if (currentPage < TOTAL_PAGES) {
+            if (currentPage < endPage)  {
                 currentPage++;
                 loadPage();
             } else {
-                Toast.makeText(this, "آخر صفحة", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "هذه آخر صفحة في " + surahName, Toast.LENGTH_SHORT).show();
             }
         });
 
         btnPrevPage.setOnClickListener(v -> {
-            if (currentPage > 1) {
+            if (currentPage > startPage) {
                 currentPage--;
                 loadPage();
             } else {
-                Toast.makeText(this, "أول صفحة", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "هذه أول صفحة في " + surahName, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void loadPage() {
-        tvPageTitle.setText("صفحة " + currentPage);
 
-        String imageUrl = "https://cdn.islamic.network/quran/images/high-resolution/page"
-                + String.format("%03d", currentPage) + ".png";
+        if (!surahName.isEmpty()) {
+            tvPageTitle.setText(surahName + " - صفحة " + currentPage);
+        } else {
+            tvPageTitle.setText("صفحة " + currentPage);
+        }
 
-        Glide.with(this)
-                .load(imageUrl)
-                .placeholder(R.drawable.ic_launcher_foreground)
-                .error(R.drawable.ic_launcher_foreground)
-                .into(imgPage);
-    }
-}
+        String fileName = "quran-pages-main/quran_pages/" + currentPage + ".png";
+
+        try {
+            InputStream is = getAssets().open(fileName);
+            Drawable drawable = Drawable.createFromStream(is, null);
+            imgPage.setImageDrawable(drawable);
+            is.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "تعذر تحميل الصفحة " + currentPage, Toast.LENGTH_SHORT).show();
+            imgPage.setImageResource(R.drawable.ic_launcher_foreground);
+        }
+
+        btnPrevPage.setEnabled(currentPage > startPage);
+        btnNextPage.setEnabled(currentPage < endPage);
+    }}

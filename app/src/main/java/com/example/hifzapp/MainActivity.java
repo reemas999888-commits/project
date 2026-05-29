@@ -17,13 +17,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ViewPager2 viewPager = findViewById(R.id.viewPager);
-
-        QuranAdapter adapter = new QuranAdapter(this);
-        viewPager.setAdapter(adapter);
         mood.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         DatabaseHelper dbHelper = new DatabaseHelper(this);
 

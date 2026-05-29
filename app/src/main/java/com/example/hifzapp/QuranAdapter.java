@@ -35,7 +35,7 @@ public class QuranAdapter extends RecyclerView.Adapter<QuranAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         try {
-            String fileName = "quran_pages/" + (position + 1) + ".png";
+            String fileName = "quran-pages-main/quran_pages/" + (position + 1) + ".png";
 
             InputStream is = context.getAssets().open(fileName);
             Drawable drawable = Drawable.createFromStream(is, null);

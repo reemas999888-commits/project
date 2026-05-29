@@ -14,6 +14,7 @@ public class HifzSetupActivity extends BaseActivity {
     private TextView tvSetupSurahName, tvInfoSurahName, tvInfoVerseCount;
     private TextView tvFromVerse, tvToVerse, tvRepeatCount, tvWillMemorize;
     private FrameLayout btnFromPlus, btnFromMinus, btnToPlus, btnToMinus;
+    private FrameLayout btnOpenSurahPages;
     private FrameLayout btnRepeatPlus, btnRepeatMinus;
     private TextView btnQuick3, btnQuick5, btnQuick7, btnQuick10;
     private Button btnStartHifzNow;
@@ -56,7 +57,7 @@ public class HifzSetupActivity extends BaseActivity {
         btnToMinus = findViewById(R.id.btnToMinus);
         btnRepeatPlus = findViewById(R.id.btnRepeatPlus);
         btnRepeatMinus = findViewById(R.id.btnRepeatMinus);
-
+        btnOpenSurahPages = findViewById(R.id.btnOpenSurahPages);
         btnQuick3 = findViewById(R.id.btnQuick3);
         btnQuick5 = findViewById(R.id.btnQuick5);
         btnQuick7 = findViewById(R.id.btnQuick7);
@@ -73,7 +74,18 @@ public class HifzSetupActivity extends BaseActivity {
         updateRepeatUI();
 
         tvSetupBack.setOnClickListener(v -> finish());
+        btnOpenSurahPages.setOnClickListener(v -> {
+            int startPage = getSurahStartPage(surahNumber);
+            int endPage = getSurahEndPage(surahNumber);
 
+            Intent intent = new Intent(HifzSetupActivity.this, pageViewActivity.class);
+            intent.putExtra("page_number", startPage);
+            intent.putExtra("start_page", startPage);
+            intent.putExtra("end_page", endPage);
+            intent.putExtra("surah_name", surahName);
+
+            startActivity(intent);
+        });
         btnFromPlus.setOnClickListener(v -> {
             if (fromVerse < toVerse) {
                 fromVerse++;
@@ -191,5 +203,39 @@ public class HifzSetupActivity extends BaseActivity {
     private void highlightQuickBtn(TextView btn) {
         btn.setBackgroundResource(R.drawable.bg_quick_btn_active);
         btn.setTextColor(getResources().getColor(R.color.bg_dark));
+    }
+    private int getSurahStartPage(int surahNumber) {
+        int[] surahStartPages = {
+                1, 2, 50, 77, 106, 128, 151, 177, 187, 208,
+                221, 235, 249, 255, 262, 267, 282, 293, 305, 312,
+                322, 332, 342, 350, 359, 367, 377, 385, 396, 404,
+                411, 415, 418, 428, 434, 440, 446, 453, 458, 467,
+                477, 483, 489, 496, 499, 502, 507, 511, 515, 518,
+                520, 523, 526, 528, 531, 534, 537, 542, 545, 549,
+                551, 553, 554, 556, 558, 560, 562, 564, 566, 568,
+                570, 572, 574, 575, 577, 578, 580, 582, 583, 585,
+                586, 587, 587, 589, 590, 591, 591, 592, 593, 594,
+                595, 595, 596, 596, 597, 597, 598, 598, 599, 599,
+                600, 600, 601, 601, 601, 602, 602, 602, 603, 603,
+                603, 604, 604, 604
+        };
+
+        if (surahNumber < 1 || surahNumber > 114) {
+            return 1;
+        }
+
+        return surahStartPages[surahNumber - 1];
+    }
+
+    private int getSurahEndPage(int surahNumber) {
+        if (surahNumber < 1 || surahNumber > 114) {
+            return 604;
+        }
+
+        if (surahNumber == 114) {
+            return 604;
+        }
+
+        return getSurahStartPage(surahNumber + 1);
     }
 }
