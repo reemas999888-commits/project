@@ -19,7 +19,7 @@ public class QuranAdapter extends RecyclerView.Adapter<QuranAdapter.ViewHolder> 
     public QuranAdapter(Context context) {
         this.context = context;
     }
-
+//لعرض صفحات او صور... يربط البيانات بالواجهه
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

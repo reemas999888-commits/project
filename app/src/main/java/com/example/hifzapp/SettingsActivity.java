@@ -8,7 +8,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 public class SettingsActivity extends BaseActivity {
-
+//شاشة الاعدادات تتحكم بالوضع الليلي فيها رابط about
     private Switch switchDarkMode;
     private SeekBar seekFontSize;
     private TextView tvAboutLink;

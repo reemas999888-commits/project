@@ -7,7 +7,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CompletionActivity extends BaseActivity  {
-
+// تظهر بعد اكمال جلسة الحفظ
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mood.applyTheme(this);

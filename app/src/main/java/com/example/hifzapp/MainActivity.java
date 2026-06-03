@@ -11,7 +11,7 @@ import com.example.hifzapp.database.Progress;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends BaseActivity {
-
+//تعرض بداية التطبيق واخر تقدم للمستخدم ومنها ينتقل للتحدي او الاعدادات و الحفظ
     private BottomNavigationView bottomNav;
     private Button btnStartHifz;
 

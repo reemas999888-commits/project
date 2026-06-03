@@ -5,7 +5,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+//كلاس اساسي ترث منه اغلب الشاشات يطبق الاعدادات المشتركه مثل حجم الخط والثيم لاكثر من اكتيفيتي
 public class BaseActivity extends AppCompatActivity {
 
     public static final String KEY_FONT_SIZE = "font_size";

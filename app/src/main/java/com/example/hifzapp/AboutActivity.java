@@ -4,7 +4,7 @@ package com.example.hifzapp;
 import android.os.Bundle;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-
+//شاشة معلومات الطبيق
 public class AboutActivity extends AppCompatActivity {
 
     @Override

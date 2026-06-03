@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
-
-
+// مسؤوله عن عرض الايه +تشغيل الصوت +التكرار +الانتقال بين اليات +حفظ التقدم
+//meeeee
 import com.example.hifzapp.database.DatabaseHelper;
 import com.example.hifzapp.database.Progress;
 
@@ -21,15 +21,15 @@ import java.io.IOException;
 
 public class HifzActivity extends BaseActivity {
 
-    private final Handler autoHandler = new Handler(Looper.getMainLooper());
-    private boolean isAutoPlaying = false;
-    private Runnable autoRunnable;
+    private final Handler autoHandler = new Handler(Looper.getMainLooper());// امر الانتقال للايه الثانيه
+    private boolean isAutoPlaying = false;// اذا التشغيل التلقايي شغال او متوقف
+    private Runnable autoRunnable;// النتتقال للتكرار او الايه التاليه
     private MediaPlayer mediaPlayer;
 
-    private static final String AUDIO_BASE =
+    private static final String AUDIO_BASE =// رابط صوتت القارئ العفاسي
             "https://cdn.islamic.network/quran/audio/128/ar.alafasy/";
 
-    private static final int[] SURAH_OFFSET = {
+    private static final int[] SURAH_OFFSET = {// تحول رقم الايه لرقم عام
             0, 0, 7, 293, 493, 669, 789, 954, 1160, 1235, 1364, 1473,
             1596, 1707, 1750, 1802, 1901, 2029, 2140, 2250, 2348, 2483,
             2595, 2673, 2791, 2855, 2932, 3159, 3252, 3340, 3409, 3469,
@@ -75,7 +75,7 @@ public class HifzActivity extends BaseActivity {
     private int currentRepeat = 1;
     private ImageView imgPageHifz;
 
-    private static final String[] FATIHA_VERSES = {
+    private static final String[] FATIHA_VERSES = { // لو فشل جلب النص تحطها
             "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ",
             "ٱلۡحَمۡدُ لِلَّهِ رَبِّ ٱلۡعَـٰلَمِینَ",
             "ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ",
@@ -90,10 +90,10 @@ public class HifzActivity extends BaseActivity {
         mood.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hifz);
-        imgPageHifz = findViewById(R.id.imgPageHifz);
-        dbHelper = new DatabaseHelper(this);
+        imgPageHifz = findViewById(R.id.imgPageHifz);// صورة صفحة المصحف
+        dbHelper = new DatabaseHelper(this);// يجهز قاعدة البيانات
 
-        surahName = getIntent().getStringExtra("surah_name");
+        surahName = getIntent().getStringExtra("surah_name");// يستقبل البيانات اللي اختارها المستخدم من سيت اب
         surahNumber = getIntent().getIntExtra("surah_number", 1);
         fromVerse = getIntent().getIntExtra("from_verse", 1);
         toVerse = getIntent().getIntExtra("to_verse", 7);
@@ -104,9 +104,9 @@ public class HifzActivity extends BaseActivity {
         }
 
         currentVerse = fromVerse;
-        currentRepeat = 1;
+        currentRepeat = 1;// بداية التكرار
 
-        Progress progress = dbHelper.getProgress();
+        Progress progress = dbHelper.getProgress();// اذا في تقدم حفظ من قبل تقراها من SQLite
 
         if (progress != null &&
                 progress.currentAyah >= fromVerse &&
@@ -122,7 +122,7 @@ public class HifzActivity extends BaseActivity {
         tvProgressPercent = findViewById(R.id.tvProgressPercent);
         progressHifz = findViewById(R.id.progressHifz);
         tvCurrentVerseNum = findViewById(R.id.tvCurrentVerseNum);
-        tvVerseText = findViewById(R.id.tvVerseText);
+        tvVerseText = findViewById(R.id.tvVerseText);// نص الايه
         tvRepStar1 = findViewById(R.id.tvRepStar1);
         tvRepStar2 = findViewById(R.id.tvRepStar2);
         tvRepStar3 = findViewById(R.id.tvRepStar3);
@@ -139,12 +139,12 @@ public class HifzActivity extends BaseActivity {
         tvHifzSurahName.setText(surahName);
         updateUI();
 
-        tvHifzClose.setOnClickListener(v -> {
+        tvHifzClose.setOnClickListener(v -> {// زر الاغلاق يوقف الصوت
             releaseMediaPlayer();
             finish();
         });
 
-        btnPlayPause.setOnClickListener(v -> {
+        btnPlayPause.setOnClickListener(v -> {// زر التشغيل و الايقاف
             if (isAutoPlaying) {
                 stopAutoPlay();
             } else {
@@ -152,20 +152,20 @@ public class HifzActivity extends BaseActivity {
             }
         });
 
-        btnNext.setOnClickListener(v -> {
+        btnNext.setOnClickListener(v -> {//  زر التالي
             stopAutoPlay();
 
             if (currentVerse < toVerse) {
-                currentVerse++;
+                currentVerse++;// اذا م وصل اخر ايه يزيد ايه و يرجع التكرار 1
                 currentRepeat = 1;
                 updateUI();
                 dbHelper.saveProgress(surahNumber, currentVerse);
             } else {
-                openCompletion();
+                openCompletion();// اذا وصل اخر ايه يجفظ التقدم
             }
         });
 
-        btnPrev.setOnClickListener(v -> {
+        btnPrev.setOnClickListener(v -> {//  زر الايه السابقه بشرط م يرجع قبل ايه البدايه
             stopAutoPlay();
 
             if (currentVerse > fromVerse) {
@@ -176,7 +176,7 @@ public class HifzActivity extends BaseActivity {
             }
         });
 
-        btnRepeat.setOnClickListener(v -> {
+        btnRepeat.setOnClickListener(v -> {// زر اعادة الايه
             stopAutoPlay();
             playAudio(false);
         });
@@ -189,7 +189,7 @@ public class HifzActivity extends BaseActivity {
         releaseMediaPlayer();
     }
 
-    private void startAutoPlay() {
+    private void startAutoPlay() {// تشغل الصوت مع انتقال تلقائي
         isAutoPlaying = true;
         tvPlayPauseIcon.setText("⏸");
         playAudio(true);
@@ -199,7 +199,7 @@ public class HifzActivity extends BaseActivity {
         isAutoPlaying = false;
         tvPlayPauseIcon.setText("▶");
 
-        if (autoRunnable != null) {
+        if (autoRunnable != null) {// تلغي اي تشغيل مؤجل عشان م ينتقل بالغلط
             autoHandler.removeCallbacks(autoRunnable);
             autoRunnable = null;
         }
@@ -208,10 +208,10 @@ public class HifzActivity extends BaseActivity {
             mediaPlayer.pause();
         }
 
-        showAudioIndicator(false);
+        showAudioIndicator(false);//  تخفي مؤشر الصوت
     }
 
-    private void scheduleNext() {
+    private void scheduleNext() {// بعد م يوقف الصوت ينتظر نص ثانيه قبل م يقرر
         if (!isAutoPlaying) {
             return;
         }
@@ -222,13 +222,13 @@ public class HifzActivity extends BaseActivity {
             }
 
             if (currentRepeat < repeatCount) {
-                currentRepeat++;
-            } else if (currentVerse < toVerse) {
+                currentRepeat++;//  اذا م تكررت بالعدد المطلوب يعيد
+            } else if (currentVerse < toVerse) {//  يروح الايه اللي بعد
                 currentVerse++;
                 currentRepeat = 1;
             } else {
                 isAutoPlaying = false;
-                openCompletion();
+                openCompletion();// اذا انتهى من اخر ايه يفتح شاشة الاكمال
                 return;
             }
 
@@ -240,7 +240,7 @@ public class HifzActivity extends BaseActivity {
         autoHandler.postDelayed(autoRunnable, 500);
     }
 
-    private void playAudio(boolean autoAdvance) {
+    private void playAudio(boolean autoAdvance) { // تشغل صوت الايه حسب الرقم العام
         int globalAyah;
 
         if (surahNumber >= 1 && surahNumber < SURAH_OFFSET.length) {
@@ -249,21 +249,21 @@ public class HifzActivity extends BaseActivity {
             globalAyah = currentVerse;
         }
 
-        String url = AUDIO_BASE + globalAyah + ".mp3";
+        String url = AUDIO_BASE + globalAyah + ".mp3";// بناء رابط الصوت
 
         com.example.hifzapp.database.Ayah dbAyah =
-                dbHelper.getAyah(surahNumber, currentVerse);
+                dbHelper.getAyah(surahNumber, currentVerse);// لو في قاعدة بيانات فيها رابط الصوت يستخدمه هو
 
         if (dbAyah != null && dbAyah.getAudioUrl() != null && !dbAyah.getAudioUrl().isEmpty()) {
             url = dbAyah.getAudioUrl();
         }
 
-        releaseMediaPlayer();
-        showAudioIndicator(true);
+        releaseMediaPlayer();// تشغيل الصوت
+        showAudioIndicator(true);//  يظهر مؤشر الصوت
 
-        mediaPlayer = new MediaPlayer();
+        mediaPlayer = new MediaPlayer();// ينشئ ميديا بلاير
 
-        mediaPlayer.setAudioAttributes(
+        mediaPlayer.setAudioAttributes(//  يعطيه رابط الصوت
                 new AudioAttributes.Builder()
                         .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                         .setUsage(AudioAttributes.USAGE_MEDIA)
@@ -276,8 +276,8 @@ public class HifzActivity extends BaseActivity {
 
             mediaPlayer.setOnPreparedListener(MediaPlayer::start);
 
-            mediaPlayer.setOnCompletionListener(mp -> {
-                showAudioIndicator(false);
+            mediaPlayer.setOnCompletionListener(mp -> {// اذا انتهى الصوت
+                showAudioIndicator(false);//  لو ترو يستدعي SCHEDUALENEXT عشان يكرر او ينتقل
 
                 if (autoAdvance) {
                     scheduleNext();
@@ -285,9 +285,9 @@ public class HifzActivity extends BaseActivity {
             });
 
             mediaPlayer.setOnErrorListener((mp, what, extra) -> {
-                showAudioIndicator(false);
+                showAudioIndicator(false);// لو صار خطا بالصوت يخفي حق الصوت
 
-                if (autoAdvance) {
+                if (autoAdvance) {//  لو التشغيل تلقائي  ينتظر ثانيه ونص و يحاول يكمل الخطوه الثانيه
                     autoHandler.postDelayed(this::scheduleNext, 1500);
                 }
 
@@ -299,7 +299,7 @@ public class HifzActivity extends BaseActivity {
         }
     }
 
-    private void releaseMediaPlayer() {
+    private void releaseMediaPlayer() { //  تمنع اكثر من صوت يشتغلون سوا او يصير استهلاك للذاكره
         if (mediaPlayer != null) {
             try {
                 if (mediaPlayer.isPlaying()) {
@@ -315,7 +315,7 @@ public class HifzActivity extends BaseActivity {
         }
     }
 
-    private void showAudioIndicator(boolean show) {
+    private void showAudioIndicator(boolean show) {//  تظهر او تخفي مؤشر الصوت
         View v = findViewById(R.id.llAudioIndicator);
 
         if (v != null) {
@@ -323,12 +323,12 @@ public class HifzActivity extends BaseActivity {
         }
     }
 
-    private void openCompletion() {
+    private void openCompletion() { // تشتغل لما المستخدم يحلص اخر ايه
         releaseMediaPlayer();
 
-        int completedVerses = toVerse - fromVerse + 1;
+        int completedVerses = toVerse - fromVerse + 1; //  تحسب عدد التكرارات  والايات
         int completedRepetitions = completedVerses * repeatCount;
-        dbHelper.saveCompletedHifz(
+        dbHelper.saveCompletedHifz( // تضيف التقدم
                 surahNumber,
                 surahName,
                 fromVerse,
@@ -341,7 +341,7 @@ public class HifzActivity extends BaseActivity {
                 completedVerses,
                 completedRepetitions
         );
-
+  // تفتح شاشة الكمال
         Intent intent = new Intent(HifzActivity.this, CompletionActivity.class);
         intent.putExtra("surah_name", surahName);
         intent.putExtra("verse_count", completedVerses);
@@ -349,12 +349,12 @@ public class HifzActivity extends BaseActivity {
         finish();
     }
 
-    private void updateUI() {
-        int totalVerses = toVerse - fromVerse + 1;
+    private void updateUI() {// تحدث كل شي ظاهر بالشاشه
+        int totalVerses = toVerse - fromVerse + 1; // عدد الايات المختاره
         int verseIndex = currentVerse - fromVerse;
-        int totalDone = verseIndex * repeatCount + (currentRepeat - 1);
+        int totalDone = verseIndex * repeatCount + (currentRepeat - 1);// كم تكرار تم انجازه
 
-        int percent;
+        int percent;// نسبة الانجاز
 
         if (totalVerses * repeatCount > 0) {
             percent = (totalDone * 100) / (totalVerses * repeatCount);
@@ -370,10 +370,10 @@ public class HifzActivity extends BaseActivity {
 
         com.example.hifzapp.database.Ayah dbAyah =
                 dbHelper.getAyah(surahNumber, currentVerse);
-
+// جلب النص من sqlITE
         if (dbAyah != null && dbAyah.getText() != null && !dbAyah.getText().isEmpty()) {
             tvVerseText.setText(dbAyah.getText());
-            // تحميل صورة الصفحة
+            //    تحميل صورة الصفحة باستخدام GLIDE
             int pageNum = (dbAyah != null && dbAyah.pageNumber > 0) ? dbAyah.pageNumber : 1;
             String pageImageUrl = "https://cdn.islamic.network/quran/images/high-resolution/page"
                     + String.format("%03d", pageNum) + ".png";
@@ -383,7 +383,7 @@ public class HifzActivity extends BaseActivity {
                     .placeholder(R.drawable.ic_launcher_foreground)
                     .into(imgPageHifz);
         } else {
-            // جلب النص من AlQuran Cloud API
+            //    جلب النص من AlQuran Cloud API اذا م لقيها ب SQL
             int absoluteAyah = SURAH_OFFSET[surahNumber] + currentVerse;
             String apiUrl = "https://api.alquran.cloud/v1/ayah/" + absoluteAyah + "/quran-uthmani";
 
@@ -414,7 +414,7 @@ public class HifzActivity extends BaseActivity {
         tvRepProgress.setText(currentRepeat + " من " + repeatCount);
     }
 
-    private void updateRepetitionStars() {
+    private void updateRepetitionStars() { // تعرض شكل التقدم على شكل نجوم
         TextView[] stars = {
                 tvRepStar1,
                 tvRepStar2,

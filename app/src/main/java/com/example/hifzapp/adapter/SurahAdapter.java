@@ -14,7 +14,7 @@ import com.example.hifzapp.model.Surah;
 import java.util.List;
 
 public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHolder> {
-
+//يعرض الصوره المختاره
     private List<Surah> surahList;
     private OnSurahClickListener listener;
 

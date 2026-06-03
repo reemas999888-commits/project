@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import androidx.appcompat.app.AppCompatDelegate;
 
 public class mood {
-
+//كلاس مساعد للتحكم بالثيم
     public static final String PREFS_NAME = "hifz_prefs";
     public static final String KEY_LIGHT_MODE = "light_mode";
 

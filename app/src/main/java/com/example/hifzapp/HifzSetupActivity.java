@@ -10,7 +10,8 @@ import com.example.hifzapp.database.DatabaseHelper;
 import com.example.hifzapp.database.Progress;
 
 public class HifzSetupActivity extends BaseActivity {
-
+//شاشة اعدات الحفظ لما المستخدم يحدد من ايه لايه وعدد التكرار
+    //meeeee
     private TextView tvSetupSurahName, tvInfoSurahName, tvInfoVerseCount;
     private TextView tvFromVerse, tvToVerse, tvRepeatCount, tvWillMemorize;
     private FrameLayout btnFromPlus, btnFromMinus, btnToPlus, btnToMinus;
@@ -38,7 +39,7 @@ public class HifzSetupActivity extends BaseActivity {
         totalVerses = getIntent().getIntExtra("surah_verse_count", 7);
 
         if (surahName == null) {
-            surahName = "سورة الفاتحة";
+            surahName = "سورة الفاتحة";//لو صار خطأ يرجع للفاتحه
         }
 
         toVerse = totalVerses;
@@ -66,19 +67,20 @@ public class HifzSetupActivity extends BaseActivity {
         btnStartHifzNow = findViewById(R.id.btnStartHifzNow);
         tvSetupBack = findViewById(R.id.tvSetupBack);
 
-        tvSetupSurahName.setText(surahName);
+        tvSetupSurahName.setText(surahName);// اسم السوره وعدد اياتها يعني المعلومات
         tvInfoSurahName.setText(surahName);
         tvInfoVerseCount.setText(totalVerses + " آية");
 
-        updateUI();
+        updateUI();// تحدث اية البدتيه و النهايه اللي بتنحفظ
         updateRepeatUI();
 
         tvSetupBack.setOnClickListener(v -> finish());
-        btnOpenSurahPages.setOnClickListener(v -> {
+
+        btnOpenSurahPages.setOnClickListener(v -> {// زر فتح صفحات السوره
             int startPage = getSurahStartPage(surahNumber);
             int endPage = getSurahEndPage(surahNumber);
 
-            Intent intent = new Intent(HifzSetupActivity.this, pageViewActivity.class);
+            Intent intent = new Intent(HifzSetupActivity.this, pageViewActivity.class);// يرسلها ل
             intent.putExtra("page_number", startPage);
             intent.putExtra("start_page", startPage);
             intent.putExtra("end_page", endPage);
@@ -86,21 +88,21 @@ public class HifzSetupActivity extends BaseActivity {
 
             startActivity(intent);
         });
-        btnFromPlus.setOnClickListener(v -> {
-            if (fromVerse < toVerse) {
+        btnFromPlus.setOnClickListener(v -> {// زر زيادة ايه
+            if (fromVerse < toVerse) {// بشرط ان اية البدايه م تتجاوز اية النهايه
                 fromVerse++;
                 updateUI();
             }
         });
 
-        btnFromMinus.setOnClickListener(v -> {
+        btnFromMinus.setOnClickListener(v -> {// انقاص اية البدايه
             if (fromVerse > 1) {
                 fromVerse--;
                 updateUI();
             }
         });
 
-        btnToPlus.setOnClickListener(v -> {
+        btnToPlus.setOnClickListener(v -> {// زر زيادة اية النهايه
             if (toVerse < totalVerses) {
                 toVerse++;
                 updateUI();
@@ -114,7 +116,7 @@ public class HifzSetupActivity extends BaseActivity {
             }
         });
 
-        btnRepeatPlus.setOnClickListener(v -> {
+        btnRepeatPlus.setOnClickListener(v -> {// زيادة التكرار
             if (repeatCount < 20) {
                 repeatCount++;
                 updateRepeatUI();
@@ -128,7 +130,7 @@ public class HifzSetupActivity extends BaseActivity {
             }
         });
 
-        btnQuick3.setOnClickListener(v -> {
+        btnQuick3.setOnClickListener(v -> {// ازرار جاهزه
             repeatCount = 3;
             updateRepeatUI();
         });
@@ -148,11 +150,11 @@ public class HifzSetupActivity extends BaseActivity {
             updateRepeatUI();
         });
 
-        btnStartHifzNow.setOnClickListener(v -> {
+        btnStartHifzNow.setOnClickListener(v -> {// زر بدء الحفظ
 
             Intent intent = new Intent(HifzSetupActivity.this, HifzActivity.class);
 
-            intent.putExtra("surah_name", surahName);
+            intent.putExtra("surah_name", surahName);// يرسل هذي للكلاس
             intent.putExtra("surah_number", surahNumber);
             intent.putExtra("from_verse", fromVerse);
             intent.putExtra("to_verse", toVerse);
@@ -162,7 +164,7 @@ public class HifzSetupActivity extends BaseActivity {
         });
     }
 
-    private void updateUI() {
+    private void updateUI() {// تحدث ايات البيانات بالواجهه حسب اختياره
         tvFromVerse.setText(String.valueOf(fromVerse));
         tvToVerse.setText(String.valueOf(toVerse));
 
@@ -170,7 +172,7 @@ public class HifzSetupActivity extends BaseActivity {
         tvWillMemorize.setText("⭐  ستحفظ " + count + " آيات");
     }
 
-    private void updateRepeatUI() {
+    private void updateRepeatUI() {//تحدث عدد التكرار
         tvRepeatCount.setText(String.valueOf(repeatCount));
 
         resetQuickButtons();
@@ -186,7 +188,7 @@ public class HifzSetupActivity extends BaseActivity {
         }
     }
 
-    private void resetQuickButtons() {
+    private void resetQuickButtons() {// عشان تكون غير نشطه
         btnQuick3.setBackgroundResource(R.drawable.bg_quick_btn_inactive);
         btnQuick3.setTextColor(getResources().getColor(R.color.white));
 
@@ -200,11 +202,11 @@ public class HifzSetupActivity extends BaseActivity {
         btnQuick10.setTextColor(getResources().getColor(R.color.white));
     }
 
-    private void highlightQuickBtn(TextView btn) {
+    private void highlightQuickBtn(TextView btn) {//لتمييز زر التكرار المختار
         btn.setBackgroundResource(R.drawable.bg_quick_btn_active);
         btn.setTextColor(getResources().getColor(R.color.bg_dark));
     }
-    private int getSurahStartPage(int surahNumber) {
+    private int getSurahStartPage(int surahNumber) {// صفحة بداية كل سوره
         int[] surahStartPages = {
                 1, 2, 50, 77, 106, 128, 151, 177, 187, 208,
                 221, 235, 249, 255, 262, 267, 282, 293, 305, 312,
@@ -227,7 +229,7 @@ public class HifzSetupActivity extends BaseActivity {
         return surahStartPages[surahNumber - 1];
     }
 
-    private int getSurahEndPage(int surahNumber) {
+    private int getSurahEndPage(int surahNumber) {// ]hgi jp]] kihdm wtpm hgs,vi
         if (surahNumber < 1 || surahNumber > 114) {
             return 604;
         }

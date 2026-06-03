@@ -10,7 +10,7 @@ import com.example.hifzapp.database.DatabaseHelper;
 import java.util.ArrayList;
 
 public class HifzHistoryActivity extends BaseActivity {
-
+// شاشة سجل الحفظ تعرض الالجلسات اللي تم حفظها سابقا باستخدام البيانات المحفوظه في SQLite
     private LinearLayout llSavedList;
 
     @Override

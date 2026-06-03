@@ -19,10 +19,11 @@ import com.example.hifzapp.model.Surah;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SurahListActivity extends BaseActivity {
-
-    private RecyclerView rvSurahs;
-    private SurahAdapter adapter;
+public class SurahListActivity extends BaseActivity {//عشان تستفيد من حجم الخط
+//شاشة عرض قائمة السور وفيها فلاتر للسور وتسمح بالبحثعن اسم سوره
+    //meeeeeeee
+    private RecyclerView rvSurahs;//قايمة عرض السور
+    private SurahAdapter adapter;//يربط بيانات السور ب ريسايكلير فيو
     private EditText etSearch;
     private TextView tvFilterAll, tvFilterJuz, tvFilterShort, tvBack;
 
@@ -33,19 +34,19 @@ public class SurahListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         mood.applyTheme(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_surah_list);
+        setContentView(R.layout.activity_surah_list);//يربطها فيها
 
         rvSurahs      = findViewById(R.id.rvSurahs);
-        etSearch      = findViewById(R.id.etSearch);
+        etSearch      = findViewById(R.id.etSearch);//ربط عناصر الواجهه بالكود
         tvFilterAll   = findViewById(R.id.tvFilterAll);
         tvFilterJuz   = findViewById(R.id.tvFilterJuz);
         tvFilterShort = findViewById(R.id.tvFilterShort);
         tvBack        = findViewById(R.id.tvBack);
 
-        rvSurahs.setLayoutManager(new LinearLayoutManager(this));
+        rvSurahs.setLayoutManager(new LinearLayoutManager(this));//عشان تظهر قايمة السور تحت بعض
 
         // تفعيل السكرول بعجلة الماوس في المحاكي
-        rvSurahs.setOnGenericMotionListener((v, event) -> {
+        rvSurahs.setOnGenericMotionListener((v, event) -> {//لتحسين التمرير بس
             if (event.getAction() == MotionEvent.ACTION_SCROLL) {
                 LinearLayoutManager lm = (LinearLayoutManager) rvSurahs.getLayoutManager();
                 if (lm != null) {
@@ -59,24 +60,24 @@ public class SurahListActivity extends BaseActivity {
         });
 
         // تحميل البيانات أولاً
-        allSurahs = SurahData.getAll();
+        allSurahs = SurahData.getAll();// عشان ياخذ كل السور من surahData
 
-        adapter = new SurahAdapter(allSurahs, surah -> {
+        adapter = new SurahAdapter(allSurahs, surah -> {//انشاء Adabter
             Intent intent = new Intent(SurahListActivity.this, HifzSetupActivity.class);
             intent.putExtra("surah_name",        surah.getName());
             intent.putExtra("surah_number",      surah.getNumber());
             intent.putExtra("surah_verse_count", surah.getNumberOfAyahs());
-            startActivity(intent);
+            startActivity(intent);//لما المستخدم يضغط  بينتقل
         });
 
-        rvSurahs.setAdapter(adapter);
+        rvSurahs.setAdapter(adapter);//نربط ال Adabter بالسايكل فيو
 
         tvBack.setOnClickListener(v -> finish());
 
-        TextView tvViewPage = findViewById(R.id.tvViewPage);
+        TextView tvViewPage = findViewById(R.id.tvViewPage);//زر عرض صفحة المصحف
         tvViewPage.setOnClickListener(v -> {
             Intent intent = new Intent(SurahListActivity.this, pageViewActivity.class);
-            intent.putExtra("page_number", 1);
+            intent.putExtra("page_number", 1);//تعرض اول صفحه من المصحف
             startActivity(intent);
         });
 
@@ -90,7 +91,7 @@ public class SurahListActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                applyFilters(s.toString());
+                applyFilters(s.toString());//التطبيق يفلتر و يعرض السوره المطابقه
             }
         });
 
@@ -99,12 +100,12 @@ public class SurahListActivity extends BaseActivity {
     }
 
     private void setFilter(String filter) {
-        currentFilter = filter;
-        updateFilterButtons();
-        applyFilters(etSearch.getText().toString());
+        currentFilter = filter;//تغير الفلتر الحالي
+        updateFilterButtons();//تحدث شكل ازرار الفلتر
+        applyFilters(etSearch.getText().toString());//تطبيق الفلتر مع البحث الحالي
     }
 
-    private void updateFilterButtons() {
+    private void updateFilterButtons() {// تغير زر الفلتر النشط  اول تكون كلها غير نشطه
         tvFilterAll.setBackgroundResource(R.drawable.bg_filter_inactive);
         tvFilterAll.setTextColor(getResources().getColor(R.color.white));
 

@@ -9,7 +9,8 @@ import com.bumptech.glide.Glide;
 import android.graphics.drawable.Drawable;
 import java.io.InputStream;
 public class pageViewActivity extends BaseActivity {
-
+//شاشة عرض صفحة المصحف من ملفات assest
+    //meeeeee
     private ImageView imgPage;
     private TextView tvPageTitle, tvPageBack;
     private Button btnNextPage, btnPrevPage;
@@ -40,7 +41,7 @@ public class pageViewActivity extends BaseActivity {
         btnNextPage = findViewById(R.id.btnNextPage);
         btnPrevPage = findViewById(R.id.btnPrevPage);
 
-        loadPage();
+        loadPage();//  اول م يفتح يستدعيها عشان تعرض الصفحه الحاليه
 
         tvPageBack.setOnClickListener(v -> finish());
 
@@ -63,9 +64,9 @@ public class pageViewActivity extends BaseActivity {
         });
     }
 
-    private void loadPage() {
+    private void loadPage() {//  تفتح صورة الصفحه و تحطها بامجفيو و تتحكم بالتالي و السابق
 
-        if (!surahName.isEmpty()) {
+        if (!surahName.isEmpty()) {//  لو اسم السوره موجود
             tvPageTitle.setText(surahName + " - صفحة " + currentPage);
         } else {
             tvPageTitle.setText("صفحة " + currentPage);
@@ -74,8 +75,8 @@ public class pageViewActivity extends BaseActivity {
         String fileName = "quran-pages-main/quran_pages/" + currentPage + ".png";
 
         try {
-            InputStream is = getAssets().open(fileName);
-            Drawable drawable = Drawable.createFromStream(is, null);
+            InputStream is = getAssets().open(fileName); //  يفتح ملف الصوره
+            Drawable drawable = Drawable.createFromStream(is, null);//  يحولها ل DROWABLE
             imgPage.setImageDrawable(drawable);
             is.close();
 
@@ -85,6 +86,6 @@ public class pageViewActivity extends BaseActivity {
             imgPage.setImageResource(R.drawable.ic_launcher_foreground);
         }
 
-        btnPrevPage.setEnabled(currentPage > startPage);
+        btnPrevPage.setEnabled(currentPage > startPage); // باول صفحه زر السابق يتعطل والعكس
         btnNextPage.setEnabled(currentPage < endPage);
     }}

@@ -12,7 +12,7 @@ import com.example.hifzapp.database.Challenge;
 import com.example.hifzapp.database.DatabaseHelper;
 
 public class ChallengeActivity extends BaseActivity {
-
+// شاشة التحدي اليومي يحددهدف يومي مثل عدد ايات ويتم حفظ ومتابعة تقدمه
     private DatabaseHelper dbHelper;
 
     private TextView tvChallengeBack;
